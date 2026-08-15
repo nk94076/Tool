@@ -26,6 +26,11 @@ final class MailService
             $mailer->SMTPSecure = (string) config('mail.encryption');
             $mailer->Port = (int) config('mail.port');
             $mailer->CharSet = 'UTF-8';
+            // Bound how long a slow/unreachable SMTP host can block the
+            // request — OTP/login/signup send mail synchronously and must
+            // not hang indefinitely if SMTP is misconfigured or down.
+            $mailer->Timeout = 10;
+            $mailer->SMTPKeepAlive = false;
 
             $mailer->setFrom((string) config('mail.from_email'), (string) config('mail.from_name'));
             $mailer->addAddress($toEmail);

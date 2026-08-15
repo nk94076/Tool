@@ -38,7 +38,10 @@ foreach ($files as $file) {
     // Split on semicolons at end of statements (safe for this schema: no stored procs).
     $statements = array_filter(array_map('trim', preg_split('/;\s*(\r?\n|$)/', $sql)));
 
-    $pdo->beginTransaction();
+    // Note: DDL statements (CREATE TABLE, etc.) cause an implicit commit in
+    // MySQL/MariaDB, so migrations are not wrapped in a transaction — a
+    // failure partway through must be fixed by hand or the DB reset, same
+    // as any other DDL-heavy migration tool.
     try {
         foreach ($statements as $statement) {
             if ($statement === '') {
@@ -48,10 +51,8 @@ foreach ($files as $file) {
         }
         $ins = $pdo->prepare("INSERT INTO migrations (migration) VALUES (:m)");
         $ins->execute(['m' => $name]);
-        $pdo->commit();
         echo "OK\n";
     } catch (Throwable $e) {
-        $pdo->rollBack();
         echo "FAILED\n";
         fwrite(STDERR, "Migration $name failed: " . $e->getMessage() . "\n");
         exit(1);

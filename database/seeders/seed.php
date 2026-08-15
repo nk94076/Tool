@@ -92,10 +92,19 @@ $rolePermissionMap = [
         'audit_logs.view', 'email_logs.view', 'notification_logs.view',
     ],
     'manager' => [
-        'dashboard.view', 'employees.view', 'reports.view',
+        // Deliberately does NOT include employees.view by default: that
+        // permission gates the admin employee panel, which exposes DOB,
+        // address, and emergency contact — sensitive data that must not
+        // reach other employees by default (see business rule: "sensitive
+        // employee information must never be exposed"). The Super Admin
+        // can grant it explicitly per-role if a company wants managers to
+        // see full profiles.
+        'dashboard.view', 'reports.view',
     ],
     'employee' => [
-        'dashboard.view', 'employees.view',
+        // Everyone gets the safe, public employee directory (no permission
+        // check — see routes/web.php) regardless of this role.
+        'dashboard.view',
     ],
 ];
 

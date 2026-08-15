@@ -58,8 +58,11 @@ final class User extends Model
         $params = [];
 
         if (!empty($filters['q'])) {
-            $where[] = "(u.full_name LIKE :q OR ep.employee_code LIKE :q OR u.official_email LIKE :q)";
-            $params['q'] = '%' . $filters['q'] . '%';
+            $where[] = "(u.full_name LIKE :q1 OR ep.employee_code LIKE :q2 OR u.official_email LIKE :q3)";
+            $like = '%' . $filters['q'] . '%';
+            $params['q1'] = $like;
+            $params['q2'] = $like;
+            $params['q3'] = $like;
         }
         if (!empty($filters['department_id'])) {
             $where[] = "ep.department_id = :department_id";

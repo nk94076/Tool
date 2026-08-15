@@ -44,12 +44,20 @@ set_error_handler(function (int $severity, string $message, string $file, int $l
 
 set_exception_handler(function (Throwable $e): void {
     app_log('Uncaught exception: ' . $e->getMessage() . "\n" . $e->getTraceAsString());
-    if (!headers_sent()) {
-        http_response_code(500);
+
+    // Discard any partially-rendered output (e.g. a view that threw mid-way
+    // through an open output buffer) so the error page is never mixed with
+    // fragments of the failed page.
+    while (ob_get_level() > 0) {
+        ob_end_clean();
     }
+
     if (php_sapi_name() === 'cli') {
         fwrite(STDERR, $e->getMessage() . "\n");
         return;
+    }
+    if (!headers_sent()) {
+        http_response_code(500);
     }
     require BASE_PATH . '/views/errors/500.php';
 });

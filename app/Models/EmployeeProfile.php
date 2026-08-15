@@ -44,10 +44,10 @@ final class EmployeeProfile extends Model
              FROM employee_profiles ep
              INNER JOIN users u ON u.id = ep.user_id
              WHERE u.status = 'active' AND ep.date_of_joining IS NOT NULL
-               AND ep.date_of_joining <= :d
-               AND DATE_FORMAT(ep.date_of_joining, '%m-%d') = DATE_FORMAT(:d, '%m-%d')"
+               AND ep.date_of_joining <= :d1
+               AND DATE_FORMAT(ep.date_of_joining, '%m-%d') = DATE_FORMAT(:d2, '%m-%d')"
         );
-        $stmt->execute(['d' => $date]);
+        $stmt->execute(['d1' => $date, 'd2' => $date]);
         return $stmt->fetchAll();
     }
 

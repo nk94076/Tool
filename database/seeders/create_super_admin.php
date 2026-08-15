@@ -100,8 +100,8 @@ try {
 
     $pdo->prepare(
         "INSERT INTO audit_logs (actor_user_id, subject_user_id, action, ip_address, user_agent)
-         VALUES (:uid, :uid, 'super_admin.created', 'cli', 'cli')"
-    )->execute(['uid' => $userId]);
+         VALUES (:uid1, :uid2, 'super_admin.created', 'cli', 'cli')"
+    )->execute(['uid1' => $userId, 'uid2' => $userId]);
 
     $pdo->commit();
     echo "Super Admin created successfully: $email (user id $userId)\n";
