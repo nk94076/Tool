@@ -1,0 +1,32 @@
+DirectoryIndex index.php
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Never allow a ".php" URL to load directly (keeps public URLs clean and
+    # stops disclosure of internal file layout).
+    RewriteCond %{THE_REQUEST} \s/+.*\.php[\s?] [NC]
+    RewriteRule ^ - [F]
+
+    # Serve real files/directories (css, js, images, uploads) directly.
+    RewriteCond %{REQUEST_FILENAME} -f [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^ - [L]
+
+    # Everything else goes through the front controller.
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+# Block direct access to dotfiles (.env, .git, etc.)
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>
+
+# Uploaded files: no PHP execution inside the uploads directory.
+<IfModule mod_php.c>
+    <Directory "uploads">
+        php_flag engine off
+    </Directory>
+</IfModule>
+
+Options -Indexes

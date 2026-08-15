@@ -1,0 +1,8 @@
+/vendor/
+/.env
+/storage/logs/*.log
+/public/uploads/profile_photos/*
+!/public/uploads/profile_photos/.gitkeep
+.DS_Store
+node_modules/
+*.swp

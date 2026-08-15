@@ -1,0 +1,1 @@
+<?php $code = 403; $heading = 'Access Denied'; $message = "You don't have permission to view this page. If you believe this is a mistake, contact your Super Admin."; require __DIR__ . '/_error_layout.php'; ?>
