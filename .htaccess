@@ -1,0 +1,4 @@
+# Defense in depth only: the Apache VirtualHost DocumentRoot MUST point to
+# the /public directory. This file protects the rest of the tree in case
+# it is ever served accidentally from the project root.
+Require all denied
