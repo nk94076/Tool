@@ -48,6 +48,21 @@ final class SecretSantaAssignment extends Model
         return $row ?: null;
     }
 
+    /**
+     * The assignment where the current user is the RECIPIENT — used only to
+     * let them read anonymous messages from their santa. Never returns the
+     * santa's identity.
+     */
+    public function assignmentIdAsRecipient(int $eventId, int $recipientUserId): ?int
+    {
+        $stmt = $this->db()->prepare(
+            "SELECT id FROM secret_santa_assignments WHERE event_id = :e AND recipient_user_id = :r"
+        );
+        $stmt->execute(['e' => $eventId, 'r' => $recipientUserId]);
+        $id = $stmt->fetchColumn();
+        return $id !== false ? (int) $id : null;
+    }
+
     public function isSantaOf(int $eventId, int $santaUserId, int $assignmentId): bool
     {
         $stmt = $this->db()->prepare(
