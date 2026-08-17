@@ -14,6 +14,25 @@ final class User extends Model
         return $this->whereFirst('official_email', mb_strtolower(trim($email)));
     }
 
+    /**
+     * Like find(), but also includes the profile photo path — used for the
+     * session's currentUser so the header/dropdown avatar can show the
+     * employee's actual uploaded photo instead of always falling back to
+     * initials.
+     */
+    public function findWithPhoto(int $id): ?array
+    {
+        $stmt = $this->db()->prepare(
+            "SELECT u.*, ep.profile_photo_path
+             FROM users u
+             LEFT JOIN employee_profiles ep ON ep.user_id = u.id
+             WHERE u.id = :id LIMIT 1"
+        );
+        $stmt->execute(['id' => $id]);
+        $row = $stmt->fetch();
+        return $row ?: null;
+    }
+
     public function superAdmin(): ?array
     {
         return $this->whereFirst('is_super_admin', 1);
