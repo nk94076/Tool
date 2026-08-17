@@ -1,6 +1,8 @@
 :root {
   --brand: #5b3df6;
   --brand-dark: #4527d6;
+  --brand-teal: #7fd8c9;
+  --brand-gradient: linear-gradient(135deg, var(--brand) 0%, #8b7ff2 45%, var(--brand-teal) 100%);
   --bg: #f4f5fb;
   --card-bg: #ffffff;
   --border: #e6e8f0;
@@ -27,8 +29,71 @@ body {
 }
 
 /* ---------------- Auth pages ---------------- */
-.auth-body { background: linear-gradient(135deg, #f4f5fb, #eae7fb); }
-.auth-card { width: 100%; max-width: 440px; border-radius: 16px; }
+.auth-body {
+  font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background:
+    radial-gradient(600px circle at 12% 8%, rgba(91, 61, 246, 0.14), transparent 60%),
+    radial-gradient(560px circle at 88% 92%, rgba(127, 216, 201, 0.20), transparent 60%),
+    linear-gradient(135deg, #f4f5fb, #eef0fc 60%, #eafaf5);
+  min-height: 100vh;
+}
+
+.auth-wrapper { position: relative; }
+
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 20px 50px -12px rgba(76, 55, 168, 0.22), 0 4px 14px rgba(31, 35, 48, 0.06);
+  position: relative;
+}
+
+.auth-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 5px;
+  background: var(--brand-gradient);
+}
+
+.auth-logo {
+  height: 40px;
+  width: auto;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.auth-card .form-label { color: #3a3f52; }
+
+.auth-card .form-control {
+  border-radius: 10px;
+  border-color: var(--border);
+  padding: .6rem .85rem;
+}
+
+.auth-card .form-control:focus {
+  border-color: #a89bf7;
+  box-shadow: 0 0 0 .2rem rgba(91, 61, 246, 0.15);
+}
+
+.auth-card .btn-primary {
+  background: var(--brand-gradient);
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px -6px rgba(91, 61, 246, 0.45);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.auth-card .btn-primary:hover,
+.auth-card .btn-primary:focus {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px -6px rgba(91, 61, 246, 0.55);
+}
+
+.auth-card a { color: var(--brand); font-weight: 500; text-decoration: none; }
+.auth-card a:hover { color: var(--brand-dark); text-decoration: underline; }
 
 /* ---------------- App shell ---------------- */
 .app-shell { display: flex; min-height: 100vh; }

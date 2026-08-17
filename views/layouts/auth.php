@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5">
 <title><?= e($title ?? 'Adhook Employee Portal') ?> - <?= e(setting('company_name', 'Adhook Media')) ?></title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="<?= asset('css/app.css') ?>" rel="stylesheet">
 </head>
@@ -12,8 +15,7 @@
   <div class="auth-card card shadow-sm border-0">
     <div class="card-body p-4 p-md-5">
       <div class="text-center mb-4">
-        <div class="brand-badge mx-auto mb-2">AH</div>
-        <h1 class="h4 fw-bold mb-0"><?= e(setting('company_name', 'Adhook Media')) ?></h1>
+        <img src="<?= asset('img/logo.png') ?>" alt="<?= e(setting('company_name', 'Adhook Media')) ?>" class="auth-logo mb-2">
         <p class="text-muted small mb-0">Employee Portal</p>
       </div>
 
