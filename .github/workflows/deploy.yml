@@ -1,0 +1,117 @@
+name: Deploy to Hostinger (employee.adhookmedia.com)
+
+# GitHub's runners have normal outbound internet access, which is what lets
+# this do the SSH deploy that a network-restricted sandbox session can't.
+#
+# Required repository secrets (Settings -> Secrets and variables -> Actions):
+#   DEPLOY_HOST      SSH host/IP of the Hostinger account
+#   DEPLOY_PORT      SSH port (Hostinger uses a non-default port)
+#   DEPLOY_USER      SSH username (e.g. u959154129)
+#   DEPLOY_PASSWORD  SSH password for that user
+#   DEPLOY_PATH      Absolute path OUTSIDE the web root to hold the app,
+#                    e.g. /home/u959154129/domains/adhookmedia.com/employee_app
+#                    (the public web root, e.g. .../public_html/employee, is
+#                    symlinked to $DEPLOY_PATH/public by this workflow so no
+#                    app code/config ever sits inside the served directory)
+#   ENV_FILE_B64     Base64 of the complete production .env file contents.
+#                    Never committed to the repo; decoded straight onto the
+#                    server. Regenerate with:
+#                      base64 -w0 your.env   (Linux)
+#                      base64 < your.env | tr -d '\n'   (macOS)
+#
+# Remote-side logic lives in .github/workflows/scripts/*.sh (plain shell
+# scripts, not inlined here) specifically so nothing depends on heredoc
+# terminators surviving YAML's block-scalar indentation rules.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: pdo, pdo_mysql, mbstring, gd, openssl, fileinfo, json
+          tools: composer:v2
+
+      - name: Install PHP dependencies
+        run: composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
+
+      - name: Install rsync/sshpass on the runner
+        run: sudo apt-get update -y && sudo apt-get install -y rsync sshpass
+
+      - name: Prepare remote directories
+        env:
+          SSHPASS: ${{ secrets.DEPLOY_PASSWORD }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+        run: |
+          sshpass -e ssh -o StrictHostKeyChecking=accept-new -p "${{ secrets.DEPLOY_PORT }}" \
+            "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}" \
+            "mkdir -p '$DEPLOY_PATH' '$DEPLOY_PATH/storage/logs' '$DEPLOY_PATH/public/uploads/profile_photos'"
+
+      - name: Sync application files
+        env:
+          SSHPASS: ${{ secrets.DEPLOY_PASSWORD }}
+        run: |
+          # public/uploads/ is excluded from --delete's reach entirely: real
+          # employee-uploaded photos live only on the server (the local
+          # checkout never has them, per .gitignore), so without this a
+          # redeploy would wipe them out.
+          rsync -az --delete \
+            --exclude='.git/' --exclude='.github/' --exclude='.env' \
+            --exclude='storage/logs/*.log' --exclude='public/uploads/' \
+            -e "sshpass -e ssh -o StrictHostKeyChecking=accept-new -p ${{ secrets.DEPLOY_PORT }}" \
+            ./ "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}/"
+
+      - name: Write .env
+        env:
+          SSHPASS: ${{ secrets.DEPLOY_PASSWORD }}
+          ENV_B64: ${{ secrets.ENV_FILE_B64 }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+        run: |
+          echo "$ENV_B64" | sshpass -e ssh -o StrictHostKeyChecking=accept-new -p "${{ secrets.DEPLOY_PORT }}" \
+            "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}" \
+            "base64 -d > '$DEPLOY_PATH/.env'"
+
+      - name: Symlink web root and set permissions
+        env:
+          SSHPASS: ${{ secrets.DEPLOY_PASSWORD }}
+        run: |
+          sshpass -e ssh -o StrictHostKeyChecking=accept-new -p "${{ secrets.DEPLOY_PORT }}" \
+            "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}" \
+            "bash -s -- '${{ secrets.DEPLOY_PATH }}'" < .github/workflows/scripts/remote-link-and-permissions.sh
+
+      - name: Run migrations and seeders (idempotent)
+        env:
+          SSHPASS: ${{ secrets.DEPLOY_PASSWORD }}
+        run: |
+          sshpass -e ssh -o StrictHostKeyChecking=accept-new -p "${{ secrets.DEPLOY_PORT }}" \
+            "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}" \
+            "bash -s -- '${{ secrets.DEPLOY_PATH }}'" < .github/workflows/scripts/remote-migrate.sh
+
+      - name: Install cron jobs (idempotent)
+        env:
+          SSHPASS: ${{ secrets.DEPLOY_PASSWORD }}
+        run: |
+          sshpass -e ssh -o StrictHostKeyChecking=accept-new -p "${{ secrets.DEPLOY_PORT }}" \
+            "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}" \
+            "bash -s -- '${{ secrets.DEPLOY_PATH }}'" < .github/workflows/scripts/remote-install-cron.sh
+
+      - name: Smoke test
+        run: |
+          sleep 3
+          code=$(curl -s -o /tmp/body.html -w "%{http_code}" https://employee.adhookmedia.com/login || echo "000")
+          echo "HTTP status: $code"
+          if [ "$code" != "200" ]; then
+            echo "::warning::Smoke test did not get HTTP 200 from /login (got $code). Check DNS/SSL/app logs."
+            head -c 2000 /tmp/body.html
+          else
+            echo "Login page responded 200 OK."
+          fi
