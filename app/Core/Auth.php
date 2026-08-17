@@ -34,7 +34,7 @@ final class Auth
             return self::$userCache;
         }
 
-        $user = (new User())->find($id);
+        $user = (new User())->findWithPhoto($id);
         if (!$user || $user['status'] !== 'active') {
             return null;
         }

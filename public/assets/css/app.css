@@ -88,6 +88,7 @@ body {
   background: var(--brand); color: #fff;
   display: inline-flex; align-items: center; justify-content: center;
   font-weight: 600; font-size: .85rem; text-transform: uppercase;
+  object-fit: cover; /* when used on an <img>, e.g. header avatar */
 }
 
 .notif-dropdown { width: 340px; max-width: 90vw; }
