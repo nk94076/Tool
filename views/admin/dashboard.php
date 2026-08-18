@@ -1,67 +1,102 @@
+<p class="text-uppercase small fw-bold text-muted mb-3" style="font-size:.72rem;letter-spacing:.05em">Overview</p>
 <div class="row g-3 mb-4">
   <div class="col-6 col-md-3">
-    <div class="stat-card"><div class="stat-label">Total Employees</div><div class="stat-value"><?= $counts['total'] ?></div></div>
+    <div class="stat-card">
+      <div class="stat-ic bg-brand"><i class="bi bi-people"></i></div>
+      <div class="stat-value"><?= $counts['total'] ?></div>
+      <div class="stat-label">Total employees</div>
+    </div>
   </div>
   <div class="col-6 col-md-3">
-    <div class="stat-card"><div class="stat-label">Active</div><div class="stat-value text-success"><?= $counts['active'] ?></div></div>
+    <div class="stat-card">
+      <div class="stat-ic bg-green"><i class="bi bi-check-circle"></i></div>
+      <div class="stat-value"><?= $counts['active'] ?></div>
+      <div class="stat-label">Active</div>
+    </div>
   </div>
   <div class="col-6 col-md-3">
-    <div class="stat-card"><div class="stat-label">Inactive</div><div class="stat-value text-danger"><?= $counts['inactive'] ?></div></div>
+    <div class="stat-card">
+      <div class="stat-ic bg-red"><i class="bi bi-x-circle"></i></div>
+      <div class="stat-value"><?= $counts['inactive'] ?></div>
+      <div class="stat-label">Inactive</div>
+    </div>
   </div>
   <div class="col-6 col-md-3">
-    <div class="stat-card"><div class="stat-label">Pending Profiles</div><div class="stat-value text-warning"><?= $counts['pending_profiles'] ?></div></div>
+    <div class="stat-card">
+      <div class="stat-ic bg-amber"><i class="bi bi-hourglass-split"></i></div>
+      <div class="stat-value"><?= $counts['pending_profiles'] ?></div>
+      <div class="stat-label">Pending profiles</div>
+    </div>
   </div>
 </div>
 
-<div class="row g-3">
-  <div class="col-md-6 col-lg-3">
+<p class="text-uppercase small fw-bold text-muted mb-3" style="font-size:.72rem;letter-spacing:.05em">Celebrations</p>
+<div class="row g-3 mb-4">
+  <div class="col-md-6">
     <div class="card h-100">
-      <div class="card-body">
-        <h3 class="h6 fw-bold mb-3"><i class="bi bi-cake2 text-primary me-1"></i>Today's Birthdays</h3>
-        <?php if (empty($todaysBirthdays)): ?><p class="text-muted small mb-0">None today</p><?php endif; ?>
-        <?php foreach ($todaysBirthdays as $b): ?><div class="small mb-1"><?= e($b['full_name']) ?></div><?php endforeach; ?>
+      <div class="card-head-x"><i class="bi bi-cake2 text-warning"></i>Birthdays</div>
+      <div class="card-body-x">
+        <?php if (empty($todaysBirthdays) && empty($tomorrowsBirthdays)): ?>
+          <div class="empty-state py-3"><i class="bi bi-calendar2-x"></i><p class="small mb-0 mt-2">No birthdays today or tomorrow</p></div>
+        <?php else: ?>
+          <?php foreach ($todaysBirthdays as $b): ?>
+            <div class="row-item">
+              <span class="avatar-sm" style="width:34px;height:34px"><?= e(mb_substr($b['full_name'], 0, 1)) ?></span>
+              <div class="row-name"><?= e($b['full_name']) ?></div>
+              <span class="chip chip-today">Today</span>
+            </div>
+          <?php endforeach; ?>
+          <?php foreach ($tomorrowsBirthdays as $b): ?>
+            <div class="row-item">
+              <span class="avatar-sm" style="width:34px;height:34px"><?= e(mb_substr($b['full_name'], 0, 1)) ?></span>
+              <div class="row-name"><?= e($b['full_name']) ?></div>
+              <span class="chip chip-tomorrow">Tomorrow</span>
+            </div>
+          <?php endforeach; ?>
+        <?php endif; ?>
       </div>
     </div>
   </div>
-  <div class="col-md-6 col-lg-3">
+  <div class="col-md-6">
     <div class="card h-100">
-      <div class="card-body">
-        <h3 class="h6 fw-bold mb-3"><i class="bi bi-cake text-primary me-1"></i>Tomorrow's Birthdays</h3>
-        <?php if (empty($tomorrowsBirthdays)): ?><p class="text-muted small mb-0">None tomorrow</p><?php endif; ?>
-        <?php foreach ($tomorrowsBirthdays as $b): ?><div class="small mb-1"><?= e($b['full_name']) ?></div><?php endforeach; ?>
+      <div class="card-head-x"><i class="bi bi-award text-success"></i>Work Anniversaries</div>
+      <div class="card-body-x">
+        <?php if (empty($todaysAnniversaries) && empty($tomorrowsAnniversaries)): ?>
+          <div class="empty-state py-3"><i class="bi bi-calendar2-x"></i><p class="small mb-0 mt-2">No anniversaries today or tomorrow</p></div>
+        <?php else: ?>
+          <?php foreach ($todaysAnniversaries as $a): ?>
+            <div class="row-item">
+              <span class="avatar-sm" style="width:34px;height:34px;background:linear-gradient(135deg,#16a34a,#0f7a37)"><?= e(mb_substr($a['full_name'], 0, 1)) ?></span>
+              <div class="row-name"><?= e($a['full_name']) ?></div>
+              <span class="chip chip-today">Today</span>
+            </div>
+          <?php endforeach; ?>
+          <?php foreach ($tomorrowsAnniversaries as $a): ?>
+            <div class="row-item">
+              <span class="avatar-sm" style="width:34px;height:34px;background:linear-gradient(135deg,#16a34a,#0f7a37)"><?= e(mb_substr($a['full_name'], 0, 1)) ?></span>
+              <div class="row-name"><?= e($a['full_name']) ?></div>
+              <span class="chip chip-tomorrow">Tomorrow</span>
+            </div>
+          <?php endforeach; ?>
+        <?php endif; ?>
       </div>
     </div>
   </div>
-  <div class="col-md-6 col-lg-3">
-    <div class="card h-100">
-      <div class="card-body">
-        <h3 class="h6 fw-bold mb-3"><i class="bi bi-award text-success me-1"></i>Today's Anniversaries</h3>
-        <?php if (empty($todaysAnniversaries)): ?><p class="text-muted small mb-0">None today</p><?php endif; ?>
-        <?php foreach ($todaysAnniversaries as $a): ?><div class="small mb-1"><?= e($a['full_name']) ?></div><?php endforeach; ?>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-6 col-lg-3">
-    <div class="card h-100">
-      <div class="card-body">
-        <h3 class="h6 fw-bold mb-3"><i class="bi bi-award-fill text-success me-1"></i>Tomorrow's Anniversaries</h3>
-        <?php if (empty($tomorrowsAnniversaries)): ?><p class="text-muted small mb-0">None tomorrow</p><?php endif; ?>
-        <?php foreach ($tomorrowsAnniversaries as $a): ?><div class="small mb-1"><?= e($a['full_name']) ?></div><?php endforeach; ?>
-      </div>
-    </div>
-  </div>
+</div>
 
-  <div class="col-12">
-    <div class="card">
-      <div class="card-body">
-        <h3 class="h6 fw-bold mb-3"><i class="bi bi-calendar-event text-primary me-1"></i>Upcoming Events</h3>
-        <?php if (empty($upcomingEvents)): ?><p class="text-muted small mb-0">No upcoming events.</p><?php endif; ?>
-        <?php foreach ($upcomingEvents as $e): ?>
-          <div class="d-flex justify-content-between border-bottom py-2 small">
-            <span><?= e($e['title']) ?></span><span class="text-muted"><?= format_date($e['event_date']) ?></span>
-          </div>
-        <?php endforeach; ?>
+<p class="text-uppercase small fw-bold text-muted mb-3" style="font-size:.72rem;letter-spacing:.05em">Upcoming events</p>
+<div class="card">
+  <?php if (empty($upcomingEvents)): ?>
+    <div class="empty-state py-4"><i class="bi bi-calendar-event"></i><p class="small mb-0 mt-2">No upcoming events.</p></div>
+  <?php else: ?>
+    <?php foreach ($upcomingEvents as $ev): ?>
+      <div class="ev-item">
+        <div class="ev-date"><b><?= e(date('d', strtotime($ev['event_date']))) ?></b><span><?= e(date('M', strtotime($ev['event_date']))) ?></span></div>
+        <div>
+          <div class="row-name"><?= e($ev['title']) ?></div>
+          <div class="row-sub mt-1"><?= format_date($ev['event_date']) ?></div>
+        </div>
       </div>
-    </div>
-  </div>
+    <?php endforeach; ?>
+  <?php endif; ?>
 </div>
