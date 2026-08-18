@@ -40,7 +40,10 @@ function set_flash(string $key, string $message): void
 
 function asset(string $path): string
 {
-    return '/assets/' . ltrim($path, '/');
+    $path = ltrim($path, '/');
+    $full = BASE_PATH . '/public/assets/' . $path;
+    $version = is_file($full) ? filemtime($full) : null;
+    return '/assets/' . $path . ($version ? '?v=' . $version : '');
 }
 
 function url(string $path = ''): string
