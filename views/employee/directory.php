@@ -40,7 +40,7 @@
         <div class="card employee-card h-100 text-center">
           <div class="card-body">
             <?php if (!empty($emp['profile_photo_path'])): ?>
-              <img src="<?= e($emp['profile_photo_path']) ?>" class="avatar-lg mx-auto mb-3" alt="">
+              <img src="<?= e($emp['profile_photo_path']) ?>" class="avatar-lg mx-auto mb-3" alt="" onerror="this.outerHTML='<div class=&quot;avatar-lg mx-auto mb-3&quot;><?= e(mb_substr($emp['full_name'], 0, 1)) ?></div>'">
             <?php else: ?>
               <div class="avatar-lg mx-auto mb-3"><?= e(mb_substr($emp['full_name'], 0, 1)) ?></div>
             <?php endif; ?>

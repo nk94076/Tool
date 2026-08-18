@@ -57,7 +57,7 @@
           <?php foreach ($todaysBirthdays as $b): ?>
             <div class="row-item">
               <?php if (!empty($b['profile_photo_path'])): ?>
-                <img src="<?= e($b['profile_photo_path']) ?>" class="avatar-sm" style="width:38px;height:38px" alt="">
+                <img src="<?= e($b['profile_photo_path']) ?>" class="avatar-sm" style="width:38px;height:38px" alt="" onerror="this.outerHTML='<span class=&quot;avatar-sm&quot; style=&quot;width:38px;height:38px&quot;><?= e(mb_substr($b['full_name'], 0, 1)) ?></span>'">
               <?php else: ?>
                 <span class="avatar-sm" style="width:38px;height:38px"><?= e(mb_substr($b['full_name'], 0, 1)) ?></span>
               <?php endif; ?>
@@ -68,7 +68,7 @@
           <?php foreach ($tomorrowsBirthdays as $b): ?>
             <div class="row-item">
               <?php if (!empty($b['profile_photo_path'])): ?>
-                <img src="<?= e($b['profile_photo_path']) ?>" class="avatar-sm" style="width:38px;height:38px" alt="">
+                <img src="<?= e($b['profile_photo_path']) ?>" class="avatar-sm" style="width:38px;height:38px" alt="" onerror="this.outerHTML='<span class=&quot;avatar-sm&quot; style=&quot;width:38px;height:38px&quot;><?= e(mb_substr($b['full_name'], 0, 1)) ?></span>'">
               <?php else: ?>
                 <span class="avatar-sm" style="width:38px;height:38px"><?= e(mb_substr($b['full_name'], 0, 1)) ?></span>
               <?php endif; ?>
