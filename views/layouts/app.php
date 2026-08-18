@@ -60,7 +60,7 @@
         <div class="dropdown">
           <button class="btn btn-icon d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown">
             <?php if (!empty($currentUser['profile_photo_path'])): ?>
-              <img src="<?= e($currentUser['profile_photo_path']) ?>" class="avatar-sm" alt="">
+              <img src="<?= e($currentUser['profile_photo_path']) ?>" class="avatar-sm" alt="" onerror="this.outerHTML='<span class=&quot;avatar-sm&quot;><?= e(mb_substr($currentUser['full_name'] ?? '?', 0, 1)) ?></span>'">
             <?php else: ?>
               <span class="avatar-sm"><?= e(mb_substr($currentUser['full_name'] ?? '?', 0, 1)) ?></span>
             <?php endif; ?>
