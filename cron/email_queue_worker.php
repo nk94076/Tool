@@ -23,7 +23,7 @@ $failed = 0;
 
 foreach ($batch as $job) {
     $queue->markProcessing((int) $job['id']);
-    $ok = MailService::sendNow($job['recipient_email'], $job['subject'], $job['body_html'], $job['template_slug']);
+    $ok = MailService::sendRaw($job['recipient_email'], $job['subject'], $job['body_html'], $job['template_slug']);
     if ($ok) {
         $queue->markSent((int) $job['id']);
         $sent++;
