@@ -107,6 +107,14 @@ final class User extends Model
         $whereSql = implode(' AND ', $where);
         $offset = max(0, ($page - 1) * $perPage);
 
+        // Whitelisted, never built from raw user input, to keep this injection-safe.
+        $orderBy = match ($filters['sort'] ?? 'name_asc') {
+            'name_desc' => 'u.full_name DESC',
+            'department' => 'd.name ASC, u.full_name ASC',
+            'designation' => 'ds.name ASC, u.full_name ASC',
+            default => 'u.full_name ASC',
+        };
+
         $sql = "SELECT u.id, u.full_name, u.official_email, u.status, u.profile_status,
                        ep.employee_code, ep.profile_photo_path, ep.department_id, ep.designation_id,
                        d.name AS department_name, ds.name AS designation_name
@@ -115,7 +123,7 @@ final class User extends Model
                 LEFT JOIN departments d ON d.id = ep.department_id
                 LEFT JOIN designations ds ON ds.id = ep.designation_id
                 WHERE $whereSql
-                ORDER BY u.full_name ASC
+                ORDER BY $orderBy
                 LIMIT :limit OFFSET :offset";
 
         $stmt = $this->db()->prepare($sql);

@@ -31,6 +31,9 @@ final class EmployeeController extends Controller
             'joining_year' => (int) $this->input('joining_year', 0) ?: null,
             'birthday_month' => (int) $this->input('birthday_month', 0) ?: null,
             'status' => $this->input('status', '') ?: null,
+            'sort' => in_array($this->input('sort', ''), ['name_asc', 'name_desc', 'department', 'designation'], true)
+                ? $this->input('sort', '')
+                : 'name_asc',
         ];
         $page = max(1, (int) $this->input('page', 1));
 
