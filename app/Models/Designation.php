@@ -18,4 +18,16 @@ final class Designation extends Model
         }
         return $this->db()->query("SELECT * FROM designations WHERE is_active = 1 ORDER BY name")->fetchAll();
     }
+
+    /**
+     * All designations (active and inactive) with their department name,
+     * for the admin management list.
+     */
+    public function allWithDepartment(): array
+    {
+        return $this->db()->query(
+            "SELECT ds.*, d.name AS department_name FROM designations ds
+             LEFT JOIN departments d ON d.id = ds.department_id ORDER BY ds.name"
+        )->fetchAll();
+    }
 }

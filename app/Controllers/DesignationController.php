@@ -13,11 +13,7 @@ final class DesignationController extends Controller
     public function index(): void
     {
         $this->requireLogin();
-        $stmt = (new Designation())->db();
-        $rows = $stmt->query(
-            "SELECT ds.*, d.name AS department_name FROM designations ds
-             LEFT JOIN departments d ON d.id = ds.department_id ORDER BY ds.name"
-        )->fetchAll();
+        $rows = (new Designation())->allWithDepartment();
 
         $this->view('admin/designations_index', [
             'title' => 'Designations',
