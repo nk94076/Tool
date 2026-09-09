@@ -107,7 +107,7 @@ $profilePillClass = fn(string $status) => match ($status) {
               <div class="dropdown">
                 <a href="/admin/employees/<?= $emp['id'] ?>" class="btn btn-sm btn-outline-primary">View</a>
                 <?php if (can('employees.edit') || can('roles.edit')): ?>
-                  <button class="btn btn-sm btn-icon" type="button" data-bs-toggle="dropdown" data-bs-strategy="fixed" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i></button>
+                  <button class="btn btn-sm btn-icon" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-three-dots-vertical"></i></button>
                   <ul class="dropdown-menu dropdown-menu-end">
                     <?php if (can('employees.edit')): ?><li><a class="dropdown-item" href="/admin/employees/<?= $emp['id'] ?>/edit">Edit</a></li><?php endif; ?>
                     <?php if (can('roles.edit')): ?><li><a class="dropdown-item" href="/admin/employees/<?= $emp['id'] ?>/roles">Assign Roles</a></li><?php endif; ?>

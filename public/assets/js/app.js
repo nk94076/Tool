@@ -61,4 +61,35 @@
 
   loadNotifications();
   setInterval(loadNotifications, 60000);
+
+  // Dropdown menus inside a scrolling container (e.g. a table's
+  // .table-responsive, which sets overflow-x: auto — and per the CSS
+  // spec that forces overflow-y to auto too, not visible) get their
+  // open menu clipped by that container instead of floating above it.
+  // Position every opened dropdown-menu as position:fixed, computed
+  // straight from the toggle's real screen position, so it always
+  // renders above everything regardless of any clipping ancestor.
+  document.addEventListener('shown.bs.dropdown', function (e) {
+    const toggle = e.target;
+    const menu = toggle.nextElementSibling;
+    if (!menu || !menu.classList.contains('dropdown-menu')) return;
+
+    const rect = toggle.getBoundingClientRect();
+    const menuHeight = menu.offsetHeight;
+    const fitsBelow = rect.bottom + menuHeight + 4 <= window.innerHeight;
+
+    menu.style.position = 'fixed';
+    menu.style.margin = '0';
+    menu.style.top = fitsBelow
+      ? (rect.bottom + 4) + 'px'
+      : (rect.top - menuHeight - 4) + 'px';
+
+    if (menu.classList.contains('dropdown-menu-end')) {
+      menu.style.left = 'auto';
+      menu.style.right = (window.innerWidth - rect.right) + 'px';
+    } else {
+      menu.style.left = rect.left + 'px';
+      menu.style.right = 'auto';
+    }
+  });
 })();
