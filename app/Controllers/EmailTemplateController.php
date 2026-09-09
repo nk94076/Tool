@@ -12,9 +12,27 @@ final class EmailTemplateController extends Controller
     public function index(): void
     {
         $this->requireLogin();
+        $model = new EmailTemplate();
+        $templates = $model->all('name');
+
+        $sampleVars = [
+            'employee_name' => 'John Doe',
+            'designation' => 'Software Engineer',
+            'department' => 'Engineering',
+            'joining_date' => date('d M Y', strtotime('-2 years')),
+            'years_completed' => '2',
+            'event_date' => date('d M Y'),
+            'otp_code' => '123456',
+            'expiry_minutes' => '10',
+        ];
+        foreach ($templates as &$template) {
+            $template['preview'] = $model->render($template, $sampleVars);
+        }
+        unset($template);
+
         $this->view('admin/email_templates_index', [
             'title' => 'Email Templates',
-            'templates' => (new EmailTemplate())->all('name'),
+            'templates' => $templates,
         ]);
     }
 
