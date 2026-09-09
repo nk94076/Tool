@@ -62,7 +62,13 @@
 
     for (let d = 1; d <= daysInMonth; d++) {
       const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-      const dayEvents = events.filter(e => e.date === dateStr);
+      const monthDay = dateStr.slice(5);
+      const dayEvents = events.filter(e => {
+        // Birthdays/anniversaries recur every year on the same month-day,
+        // regardless of which year the feed happened to stamp them with.
+        if (e.type === 'birthday' || e.type === 'anniversary') return e.date.slice(5) === monthDay;
+        return e.date === dateStr;
+      });
       const dots = dayEvents.slice(0, 4).map(e => `<span class="cal-dot" style="background:${colors[e.type] || '#999'}" title="${e.title.replace(/"/g,'')}"></span>`).join('');
       html += `<div class="cal-cell"><div class="day-num">${d}</div><div>${dots}</div></div>`;
     }
