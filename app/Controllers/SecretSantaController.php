@@ -209,9 +209,16 @@ final class SecretSantaController extends Controller
     public function adminIndex(): void
     {
         $this->requireLogin();
+        $participantModel = new SecretSantaParticipant();
+        $events = (new SecretSantaEvent())->allOrdered();
+        foreach ($events as &$event) {
+            $event['participant_count'] = $participantModel->countForEvent((int) $event['id']);
+        }
+        unset($event);
+
         $this->view('admin/secret_santa_index', [
             'title' => 'Secret Santa Events',
-            'events' => (new SecretSantaEvent())->allOrdered(),
+            'events' => $events,
         ]);
     }
 
@@ -283,6 +290,7 @@ final class SecretSantaController extends Controller
     {
         return [
             'name' => trim((string) $this->input('name', '')),
+            'description' => trim((string) $this->input('description', '')) ?: null,
             'event_year' => (int) $this->input('event_year', date('Y')),
             'registration_deadline' => $this->input('registration_deadline', ''),
             'gift_exchange_date' => $this->input('gift_exchange_date', ''),
