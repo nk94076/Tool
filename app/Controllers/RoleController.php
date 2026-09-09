@@ -24,6 +24,7 @@ final class RoleController extends Controller
         $this->view('admin/roles_index', [
             'title' => 'Roles & Permissions',
             'roles' => $roles,
+            'totalPermissions' => count((new Permission())->all()),
         ]);
     }
 
