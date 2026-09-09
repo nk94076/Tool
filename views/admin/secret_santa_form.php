@@ -12,6 +12,10 @@
         <label class="form-label small">Year</label>
         <input type="number" name="event_year" class="form-control" value="<?= e((string) ($event['event_year'] ?? date('Y'))) ?>" required>
       </div>
+      <div class="col-12">
+        <label class="form-label small">Tagline (Optional)</label>
+        <input type="text" name="description" class="form-control" maxlength="255" placeholder="e.g. Let's make this holiday season special!" value="<?= e($event['description'] ?? '') ?>">
+      </div>
       <div class="col-md-6">
         <label class="form-label small">Registration Deadline</label>
         <input type="date" name="registration_deadline" class="form-control" value="<?= e($event['registration_deadline'] ?? '') ?>" required>
