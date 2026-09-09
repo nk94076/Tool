@@ -156,7 +156,12 @@ foreach ($departments as $name) {
 }
 echo "Seeded departments.\n";
 
-$designations = ['Software Engineer', 'Senior Software Engineer', 'Marketing Executive', 'Sales Executive', 'HR Executive', 'Finance Executive', 'Team Lead', 'Manager'];
+$designations = [
+    'Software Engineer', 'Senior Software Engineer', 'Marketing Executive', 'Sales Executive',
+    'HR Executive', 'Finance Executive', 'Team Lead', 'Manager',
+    'Finance', 'Media Buyer / Performance Marketing', 'Website Developer', 'Graphic Designer',
+    'Community Manager', 'Social Media Manager', 'Business Head', 'CEO / Founder',
+];
 $insertDesig = $pdo->prepare("INSERT IGNORE INTO designations (name) VALUES (:name)");
 foreach ($designations as $name) {
     $insertDesig->execute(['name' => $name]);
