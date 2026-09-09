@@ -1,5 +1,13 @@
-<div class="d-flex justify-content-between align-items-center mb-3">
-  <h2 class="h5 fw-bold mb-0">Complete Your Profile</h2>
+<div class="admin-breadcrumb"><a href="/profile">My Profile</a> <i class="bi bi-chevron-right mx-1" style="font-size:.65rem"></i> <span class="current">Edit</span></div>
+
+<div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
+  <div class="page-hero-title">
+    <span class="bar"></span>
+    <div>
+      <h1 class="h4 fw-bold mb-1">Complete Your Profile</h1>
+      <p class="text-muted small mb-0">Keep your details up to date.</p>
+    </div>
+  </div>
   <a href="/profile/preview" class="btn btn-outline-primary btn-sm">Preview</a>
 </div>
 
@@ -7,8 +15,8 @@
   <?= $csrfField ?>
 
   <div class="card mb-3">
-    <div class="card-body">
-      <h3 class="h6 fw-bold mb-3">Personal Information</h3>
+    <div class="card-head-x"><i class="bi bi-person text-primary"></i> Personal Information</div>
+    <div class="card-body-x p-3">
       <div class="row g-3">
         <div class="col-md-4">
           <label class="form-label small">Profile Photo</label>
@@ -55,8 +63,8 @@
   </div>
 
   <div class="card mb-3">
-    <div class="card-body">
-      <h3 class="h6 fw-bold mb-3">Employment Information</h3>
+    <div class="card-head-x"><i class="bi bi-briefcase text-primary"></i> Employment Information</div>
+    <div class="card-body-x p-3">
       <div class="row g-3">
         <div class="col-md-4">
           <label class="form-label small">Employee ID</label>
@@ -102,8 +110,8 @@
   </div>
 
   <div class="card mb-3">
-    <div class="card-body">
-      <h3 class="h6 fw-bold mb-1"><i class="bi bi-gift me-2 text-primary"></i>Secret Santa Preferences</h3>
+    <div class="card-head-x"><i class="bi bi-gift text-primary"></i> Secret Santa Preferences</div>
+    <div class="card-body-x p-3">
       <p class="text-muted small">Optional. Only visible to whoever gets assigned as your Secret Santa.</p>
       <div class="mb-3 form-check">
         <input type="checkbox" class="form-check-input" name="secret_santa_participate" value="1" id="ssParticipate" <?= !empty($preferences) ? 'checked' : '' ?>>

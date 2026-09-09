@@ -1,29 +1,42 @@
-<div class="d-flex justify-content-between align-items-center mb-3">
-  <h2 class="h5 fw-bold mb-0" id="calTitle"></h2>
-  <div class="btn-group">
-    <button class="btn btn-outline-secondary btn-sm" id="calPrev"><i class="bi bi-chevron-left"></i></button>
-    <button class="btn btn-outline-secondary btn-sm" id="calToday">Today</button>
-    <button class="btn btn-outline-secondary btn-sm" id="calNext"><i class="bi bi-chevron-right"></i></button>
+<div class="page-hero">
+  <div class="page-hero-title">
+    <span class="bar"></span>
+    <div>
+      <h1>Calendar</h1>
+      <p>Birthdays, anniversaries and events at a glance.</p>
+    </div>
+  </div>
+  <div class="dir-hero-deco">
+    <span class="dir-hero-ic"><i class="bi bi-calendar3-fill"></i></span>
+    <div class="dir-hero-script">Never<br>Miss<br>A Moment</div>
   </div>
 </div>
 
-<div class="d-flex gap-3 mb-3 flex-wrap small">
-  <span><span class="badge rounded-circle p-1" style="background:#5b3df6">&nbsp;</span> Birthday</span>
-  <span><span class="badge rounded-circle p-1" style="background:#16a34a">&nbsp;</span> Anniversary</span>
-  <span><span class="badge rounded-circle p-1" style="background:#d97706">&nbsp;</span> Event</span>
-  <span><span class="badge rounded-circle p-1" style="background:#dc2626">&nbsp;</span> Secret Santa</span>
-</div>
-
 <div class="card">
-  <div class="card-body p-2 p-md-3">
+  <div class="card-head-x d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <span class="h6 fw-bold mb-0" id="calTitle"></span>
+    <div class="btn-group">
+      <button class="btn btn-outline-secondary btn-sm" id="calPrev"><i class="bi bi-chevron-left"></i></button>
+      <button class="btn btn-outline-secondary btn-sm" id="calToday">Today</button>
+      <button class="btn btn-outline-secondary btn-sm" id="calNext"><i class="bi bi-chevron-right"></i></button>
+    </div>
+  </div>
+  <div class="d-flex gap-3 flex-wrap small px-3 pt-3">
+    <span><span class="badge rounded-circle p-1" style="background:#5b3df6">&nbsp;</span> Birthday</span>
+    <span><span class="badge rounded-circle p-1" style="background:#16a34a">&nbsp;</span> Anniversary</span>
+    <span><span class="badge rounded-circle p-1" style="background:#d97706">&nbsp;</span> Event</span>
+    <span><span class="badge rounded-circle p-1" style="background:#dc2626">&nbsp;</span> Secret Santa</span>
+  </div>
+  <div class="card-body-x p-2 p-md-3">
     <div id="calGrid" class="calendar-grid"></div>
   </div>
 </div>
 
 <style>
-  .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
-  .cal-cell { min-height: 70px; border: 1px solid var(--border); border-radius: 8px; padding: 4px; font-size: .72rem; }
-  .cal-cell .day-num { font-weight: 600; font-size: .75rem; }
+  .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+  .cal-cell { min-height: 70px; border: 1px solid var(--border-soft); border-radius: 10px; padding: 5px; font-size: .72rem; transition: background .15s; }
+  .cal-cell:hover { background: var(--bg); }
+  .cal-cell .day-num { font-weight: 700; font-size: .75rem; }
   .cal-dot { width: 6px; height: 6px; border-radius: 50%; display: inline-block; margin-right: 2px; }
   .cal-head { text-align:center; font-weight:600; font-size:.72rem; color:#7b8194; padding:4px 0; }
   @media (max-width: 575.98px) { .cal-cell { min-height: 52px; font-size: .62rem; } }
