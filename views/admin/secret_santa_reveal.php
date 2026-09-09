@@ -1,3 +1,5 @@
+<div class="admin-breadcrumb"><a href="/admin/secret-santa">Secret Santa Events</a> <i class="bi bi-chevron-right mx-1" style="font-size:.65rem"></i> <span class="current">Emergency Reveal</span></div>
+
 <h2 class="h5 fw-bold mb-3 text-danger"><i class="bi bi-exclamation-triangle me-2"></i>Emergency Reveal</h2>
 
 <div class="alert alert-danger">

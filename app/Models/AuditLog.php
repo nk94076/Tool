@@ -29,6 +29,35 @@ final class AuditLog extends Model
         ]);
     }
 
+    public function countFiltered(array $filters): int
+    {
+        $where = ['1=1'];
+        $params = [];
+        if (!empty($filters['subject_user_id'])) {
+            $where[] = 'subject_user_id = :subject_user_id';
+            $params['subject_user_id'] = $filters['subject_user_id'];
+        }
+        if (!empty($filters['action'])) {
+            $where[] = 'action = :action';
+            $params['action'] = $filters['action'];
+        }
+        $whereSql = implode(' AND ', $where);
+        $stmt = $this->db()->prepare("SELECT COUNT(*) FROM audit_logs WHERE $whereSql");
+        $stmt->execute($params);
+        return (int) $stmt->fetchColumn();
+    }
+
+    public function countToday(): int
+    {
+        $stmt = $this->db()->query("SELECT COUNT(*) FROM audit_logs WHERE created_at >= CURDATE()");
+        return (int) $stmt->fetchColumn();
+    }
+
+    public function distinctActions(): array
+    {
+        return $this->db()->query("SELECT DISTINCT action FROM audit_logs ORDER BY action")->fetchAll(\PDO::FETCH_COLUMN);
+    }
+
     public function search(array $filters, int $page = 1, int $perPage = 50): array
     {
         $where = ['1=1'];

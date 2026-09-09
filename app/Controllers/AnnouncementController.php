@@ -17,9 +17,21 @@ final class AnnouncementController extends Controller
     public function index(): void
     {
         $this->requireLogin();
+        $announcements = (new Announcement())->recent(50);
+        $thisMonthCount = count(array_filter(
+            $announcements,
+            fn($a) => date('Y-m', strtotime($a['created_at'])) === date('Y-m')
+        ));
+        $upcomingCount = count(array_filter(
+            $announcements,
+            fn($a) => !empty($a['event_date']) && strtotime($a['event_date']) >= strtotime('today')
+        ));
+
         $this->view('admin/announcements_index', [
             'title' => 'Announcements',
-            'announcements' => (new Announcement())->recent(50),
+            'announcements' => $announcements,
+            'thisMonthCount' => $thisMonthCount,
+            'upcomingCount' => $upcomingCount,
         ]);
     }
 

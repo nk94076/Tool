@@ -1,9 +1,18 @@
-<h2 class="h5 fw-bold mb-3">Edit <?= e($user['full_name']) ?></h2>
+<div class="admin-breadcrumb"><a href="/admin/employees">Manage Employees</a> <i class="bi bi-chevron-right mx-1" style="font-size:.65rem"></i> <a href="/admin/employees/<?= $user['id'] ?>"><?= e($user['full_name']) ?></a> <i class="bi bi-chevron-right mx-1" style="font-size:.65rem"></i> <span class="current">Edit</span></div>
+
+<div class="page-hero-title mb-3">
+  <span class="bar"></span>
+  <div>
+    <h1 class="h4 fw-bold mb-1">Edit <?= e($user['full_name']) ?></h1>
+    <p class="text-muted small mb-0">Update personal and employment details.</p>
+  </div>
+</div>
 
 <form method="post" action="/admin/employees/<?= $user['id'] ?>/edit">
   <?= $csrfField ?>
   <div class="card mb-3">
-    <div class="card-body row g-3">
+    <div class="card-head-x"><i class="bi bi-person text-primary"></i> Personal Information</div>
+    <div class="card-body-x p-3 row g-3">
       <div class="col-md-6">
         <label class="form-label small">Full Name</label>
         <input type="text" name="full_name" class="form-control" value="<?= e($user['full_name']) ?>">
@@ -49,7 +58,8 @@
   </div>
 
   <div class="card mb-3">
-    <div class="card-body row g-3">
+    <div class="card-head-x"><i class="bi bi-briefcase text-primary"></i> Employment Information</div>
+    <div class="card-body-x p-3 row g-3">
       <div class="col-md-4">
         <label class="form-label small">Date of Joining</label>
         <input type="date" name="date_of_joining" class="form-control" value="<?= e($profile['date_of_joining'] ?? '') ?>">
@@ -97,6 +107,7 @@
   </div>
 
   <div class="text-end">
+    <a href="/admin/employees/<?= $user['id'] ?>" class="btn btn-outline-secondary me-2">Cancel</a>
     <button class="btn btn-primary px-4">Save Changes</button>
   </div>
 </form>

@@ -1,9 +1,18 @@
-<h2 class="h5 fw-bold mb-3"><?= $event ? 'Edit' : 'Create' ?> Secret Santa Event</h2>
+<div class="admin-breadcrumb"><a href="/admin/secret-santa">Secret Santa Events</a> <i class="bi bi-chevron-right mx-1" style="font-size:.65rem"></i> <span class="current"><?= $event ? 'Edit' : 'Create' ?> Event</span></div>
+
+<div class="page-hero-title mb-3">
+  <span class="bar"></span>
+  <div>
+    <h1 class="h4 fw-bold mb-1"><?= $event ? 'Edit' : 'Create' ?> Secret Santa Event</h1>
+    <p class="text-muted small mb-0">Set the dates, budget, and rules for this event.</p>
+  </div>
+</div>
 
 <form method="post" action="<?= $event ? '/admin/secret-santa/' . $event['id'] . '/edit' : '/admin/secret-santa' ?>">
   <?= $csrfField ?>
   <div class="card mb-3">
-    <div class="card-body row g-3">
+    <div class="card-head-x"><i class="bi bi-gift text-primary"></i> Event Details</div>
+    <div class="card-body-x p-3 row g-3">
       <div class="col-md-6">
         <label class="form-label small">Event Name</label>
         <input type="text" name="name" class="form-control" value="<?= e($event['name'] ?? 'Secret Santa ' . date('Y')) ?>" required>
