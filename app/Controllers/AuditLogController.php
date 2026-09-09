@@ -14,20 +14,32 @@ final class AuditLogController extends Controller
         $this->requireLogin();
         $page = max(1, (int) $this->input('page', 1));
         $filters = ['action' => $this->input('action', '') ?: null];
+        $perPage = 50;
+        $model = new AuditLog();
 
         $this->view('admin/audit_logs_index', [
             'title' => 'Audit Logs',
-            'logs' => (new AuditLog())->search($filters, $page, 50),
+            'logs' => $model->search($filters, $page, $perPage),
             'page' => $page,
+            'perPage' => $perPage,
+            'total' => $model->countFiltered($filters),
+            'todayCount' => $model->countToday(),
+            'actions' => $model->distinctActions(),
+            'filters' => $filters,
         ]);
     }
 
     public function emailLogs(): void
     {
         $this->requireLogin();
+        $logs = (new EmailLog())->recent(200);
+        $sentCount = count(array_filter($logs, fn($l) => $l['status'] === 'sent'));
+
         $this->view('admin/email_logs_index', [
             'title' => 'Email Logs',
-            'logs' => (new EmailLog())->recent(200),
+            'logs' => $logs,
+            'sentCount' => $sentCount,
+            'failedCount' => count($logs) - $sentCount,
         ]);
     }
 }

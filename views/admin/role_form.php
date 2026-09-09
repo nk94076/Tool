@@ -1,9 +1,18 @@
-<h2 class="h5 fw-bold mb-3"><?= $role ? 'Edit Role' : 'Create Role' ?></h2>
+<div class="admin-breadcrumb"><a href="/admin/roles">Roles &amp; Permissions</a> <i class="bi bi-chevron-right mx-1" style="font-size:.65rem"></i> <span class="current"><?= $role ? 'Edit Role' : 'Create Role' ?></span></div>
+
+<div class="page-hero-title mb-3">
+  <span class="bar"></span>
+  <div>
+    <h1 class="h4 fw-bold mb-1"><?= $role ? 'Edit Role' : 'Create Role' ?></h1>
+    <p class="text-muted small mb-0">Define the role and the permissions it grants.</p>
+  </div>
+</div>
 
 <form method="post" action="<?= $role ? '/admin/roles/' . $role['id'] . '/edit' : '/admin/roles' ?>">
   <?= $csrfField ?>
   <div class="card mb-3">
-    <div class="card-body row g-3">
+    <div class="card-head-x"><i class="bi bi-shield-check text-primary"></i> Role Details</div>
+    <div class="card-body-x p-3 row g-3">
       <div class="col-md-6">
         <label class="form-label small">Role Name</label>
         <input type="text" name="name" class="form-control" value="<?= e($role['name'] ?? '') ?>" required>
@@ -25,8 +34,8 @@
   </div>
 
   <div class="card mb-3">
-    <div class="card-body">
-      <h3 class="h6 fw-bold mb-3">Permissions</h3>
+    <div class="card-head-x"><i class="bi bi-key text-primary"></i> Permissions</div>
+    <div class="card-body-x p-3">
       <?php foreach ($permissionGroups as $group => $perms): ?>
         <div class="mb-3">
           <div class="fw-semibold small text-uppercase text-muted mb-1"><?= e(str_replace('_', ' ', $group)) ?></div>

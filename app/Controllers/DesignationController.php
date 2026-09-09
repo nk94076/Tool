@@ -15,10 +15,16 @@ final class DesignationController extends Controller
         $this->requireLogin();
         $rows = (new Designation())->allWithDepartment();
 
+        $activeCount = count(array_filter($rows, fn($d) => (int) $d['is_active'] === 1));
+        $departmentsCovered = count(array_unique(array_filter(array_column($rows, 'department_id'))));
+
         $this->view('admin/designations_index', [
             'title' => 'Designations',
             'designations' => $rows,
             'departments' => (new Department())->activeList(),
+            'activeCount' => $activeCount,
+            'inactiveCount' => count($rows) - $activeCount,
+            'departmentsCovered' => $departmentsCovered,
         ]);
     }
 
@@ -32,7 +38,8 @@ final class DesignationController extends Controller
             set_flash('error', 'Designation name is required.');
             $this->redirect('/admin/designations');
         }
-        (new Designation())->insert(['name' => $name, 'department_id' => $departmentId]);
+        $isActive = $this->input('is_active', '1') === '1' ? 1 : 0;
+        (new Designation())->insert(['name' => $name, 'department_id' => $departmentId, 'is_active' => $isActive]);
         AuditService::log('designation.created', null, 'designation', null, $name);
         set_flash('success', 'Designation added.');
         $this->redirect('/admin/designations');
@@ -48,8 +55,9 @@ final class DesignationController extends Controller
             (new \App\Core\Router())->abort(404);
         }
         $name = trim((string) $this->input('name', $desig['name']));
-        $departmentId = (int) $this->input('department_id', 0) ?: null;
-        $isActive = $this->input('is_active', '1') === '1' ? 1 : 0;
+        $departmentIdRaw = $this->input('department_id', null);
+        $departmentId = $departmentIdRaw !== null ? ((int) $departmentIdRaw ?: null) : $desig['department_id'];
+        $isActive = $this->input('is_active', (string) $desig['is_active']) === '1' ? 1 : 0;
         $model->update((int) $desig['id'], ['name' => $name, 'department_id' => $departmentId, 'is_active' => $isActive]);
         AuditService::log('designation.updated', null, 'designation', $desig['name'], $name);
         set_flash('success', 'Designation updated.');
