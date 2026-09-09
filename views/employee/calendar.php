@@ -36,10 +36,14 @@
   let events = [];
 
   function load() {
-    adhookFetch('/calendar/feed').then(r => r.json()).then(data => {
-      events = data.events || [];
-      render();
-    });
+    render(); // paint the grid immediately so it's never blank while the feed loads (or if it fails)
+    adhookFetch('/calendar/feed')
+      .then(r => r.ok ? r.json() : Promise.reject(new Error('calendar feed request failed: ' + r.status)))
+      .then(data => {
+        events = data.events || [];
+        render();
+      })
+      .catch(err => console.error('Calendar feed failed to load', err));
   }
 
   function render() {

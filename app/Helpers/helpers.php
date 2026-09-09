@@ -12,6 +12,16 @@ function e(mixed $value): string
     return htmlspecialchars((string) ($value ?? ''), ENT_QUOTES, 'UTF-8');
 }
 
+function initials(string $fullName, int $max = 2): string
+{
+    $parts = preg_split('/\s+/', trim($fullName), -1, PREG_SPLIT_NO_EMPTY);
+    if (empty($parts)) {
+        return '?';
+    }
+    $letters = array_map(fn($p) => mb_strtoupper(mb_substr($p, 0, 1)), array_slice($parts, 0, $max));
+    return implode('', $letters);
+}
+
 function old(string $key, string $default = ''): string
 {
     $old = Session::get('_old', []);

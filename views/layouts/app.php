@@ -64,7 +64,7 @@
             <?php else: ?>
               <span class="avatar-sm"><?= e(mb_substr($currentUser['full_name'] ?? '?', 0, 1)) ?></span>
             <?php endif; ?>
-            <span class="d-none d-md-inline small fw-medium"><?= e($currentUser['full_name'] ?? '') ?></span>
+            <span class="d-none d-md-inline small fw-medium" title="<?= e($currentUser['full_name'] ?? '') ?>"><?= e(initials($currentUser['full_name'] ?? '?')) ?></span>
           </button>
           <ul class="dropdown-menu dropdown-menu-end">
             <li><a class="dropdown-item" href="/profile"><i class="bi bi-person me-2"></i>My Profile</a></li>
