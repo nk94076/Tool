@@ -1,19 +1,34 @@
-<h2 class="h5 fw-bold mb-3"><i class="bi bi-gift-fill text-primary me-2"></i>Secret Santa</h2>
+<div class="page-hero">
+  <div class="page-hero-title">
+    <span class="bar"></span>
+    <div>
+      <h1>Secret Santa <span aria-hidden="true">🎁</span></h1>
+      <p>Spread some holiday cheer with your team.</p>
+    </div>
+  </div>
+  <div class="dir-hero-deco">
+    <span class="dir-hero-ic"><i class="bi bi-gift-fill"></i></span>
+    <div class="dir-hero-script">Small<br>Gifts<br>Big Smiles</div>
+  </div>
+</div>
 
 <?php if (!$event): ?>
-  <div class="empty-state"><i class="bi bi-gift"></i><p class="mt-2">There is no active Secret Santa event right now. Check back soon!</p></div>
+  <div class="card">
+    <div class="empty-state-lg">
+      <i class="bi bi-gift mb-2" style="font-size:2rem;color:var(--brand-light)"></i>
+      <p class="text-muted mb-0">There is no active Secret Santa event right now. Check back soon!</p>
+    </div>
+  </div>
 <?php else: ?>
   <div class="card mb-3">
-    <div class="card-body">
+    <div class="card-head-x"><i class="bi bi-gift text-primary"></i> <?= e($event['name']) ?> (<?= e($event['event_year']) ?>)</div>
+    <div class="card-body-x p-3">
       <div class="d-flex justify-content-between flex-wrap gap-2">
-        <div>
-          <h3 class="h6 fw-bold mb-1"><?= e($event['name']) ?> (<?= e($event['event_year']) ?>)</h3>
-          <p class="text-muted small mb-0">
-            Registration closes <?= format_date($event['registration_deadline']) ?> &middot;
-            Gift exchange on <?= format_date($event['gift_exchange_date']) ?> &middot;
-            Budget: ₹<?= number_format((float) $event['min_budget']) ?> - ₹<?= number_format((float) $event['max_budget']) ?>
-          </p>
-        </div>
+        <p class="text-muted small mb-0">
+          Registration closes <?= format_date($event['registration_deadline']) ?> &middot;
+          Gift exchange on <?= format_date($event['gift_exchange_date']) ?> &middot;
+          Budget: ₹<?= number_format((float) $event['min_budget']) ?> - ₹<?= number_format((float) $event['max_budget']) ?>
+        </p>
         <div>
           <?php if ($event['status'] === 'active'): ?>
             <?php if ($participant && $participant['opted_in']): ?>
@@ -44,8 +59,8 @@
     </div>
 
     <div class="card mb-3">
-      <div class="card-body">
-        <h3 class="h6 fw-bold mb-3">Send an Anonymous Message</h3>
+      <div class="card-head-x"><i class="bi bi-chat-heart text-primary"></i> Send an Anonymous Message</div>
+      <div class="card-body-x p-3">
         <form method="post" action="/secret-santa/message">
           <?= $csrfField ?>
           <textarea name="message" class="form-control mb-2" rows="2" maxlength="1000" placeholder="e.g. What kind of books do you like?" required></textarea>
@@ -64,13 +79,13 @@
     <div class="alert alert-secondary small">Matching has been generated. Refresh shortly if your recipient isn't showing yet.</div>
   <?php endif; ?>
 
-  <div class="text-end">
+  <div class="text-end mb-3">
     <a href="/secret-santa/inbox" class="small"><i class="bi bi-envelope me-1"></i>Check your Secret Santa inbox</a>
   </div>
 
-  <div class="card mt-3">
-    <div class="card-body">
-      <h3 class="h6 fw-bold mb-3">My Gift Preferences</h3>
+  <div class="card">
+    <div class="card-head-x"><i class="bi bi-list-check text-primary"></i> My Gift Preferences</div>
+    <div class="card-body-x p-3">
       <p class="text-muted small">These are only shown to whoever is assigned as your Secret Santa. Update anytime.</p>
       <form method="post" action="/secret-santa/preferences">
         <?= $csrfField ?>
