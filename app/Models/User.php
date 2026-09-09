@@ -151,7 +151,8 @@ final class User extends Model
             COUNT(*) AS total,
             SUM(status = 'active') AS active,
             SUM(status = 'inactive') AS inactive,
-            SUM(profile_status <> 'submitted_locked') AS pending_profiles
+            SUM(profile_status <> 'submitted_locked') AS pending_profiles,
+            SUM(created_at >= NOW() - INTERVAL 30 DAY) AS new_this_month
             FROM users WHERE deleted_at IS NULL";
         $row = $this->db()->query($sql)->fetch();
         return [
@@ -159,6 +160,7 @@ final class User extends Model
             'active' => (int) ($row['active'] ?? 0),
             'inactive' => (int) ($row['inactive'] ?? 0),
             'pending_profiles' => (int) ($row['pending_profiles'] ?? 0),
+            'new_this_month' => (int) ($row['new_this_month'] ?? 0),
         ];
     }
 }

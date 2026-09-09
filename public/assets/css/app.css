@@ -528,3 +528,61 @@ a:hover { color: var(--brand-dark); }
   width: 46px; height: 46px; border-radius: 13px; background: var(--brand-tint); color: var(--brand);
   display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 1.2rem;
 }
+
+/* ---------------- Dashboard welcome hero ---------------- */
+.dash-hero {
+  background: linear-gradient(120deg, #f3f1ff 0%, #eef0fc 55%, #eafaf5 100%);
+  border-radius: 20px; padding: 1.6rem 2rem; margin-bottom: 1.5rem;
+  display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap;
+  position: relative; overflow: hidden; border: 1px solid var(--border-soft);
+}
+.dash-hero::after {
+  content: ''; position: absolute; right: -30px; top: -50px; width: 220px; height: 220px;
+  border-radius: 50%; background: radial-gradient(circle, rgba(91, 61, 246, .10), transparent 70%);
+}
+.dash-hero h1 { font-size: 1.7rem; font-weight: 800; letter-spacing: -.02em; margin: 0 0 .3rem; }
+.dash-hero p { color: var(--text-muted); font-size: .9rem; margin: 0; }
+.dash-hero-deco { display: flex; align-items: center; gap: 1.1rem; position: relative; z-index: 1; }
+.dash-hero-quote {
+  background: rgba(255, 255, 255, .7); border: 1px solid rgba(255, 255, 255, .8);
+  border-radius: 14px; padding: .8rem 1.1rem; font-size: .82rem; font-style: italic; color: var(--brand-dark);
+  max-width: 190px; box-shadow: var(--sh-sm);
+}
+.dash-hero-quote footer { font-size: .68rem; font-style: normal; color: var(--text-faint); margin-top: .3rem; }
+.dash-hero-ic {
+  width: 58px; height: 58px; border-radius: 50%; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--brand), var(--brand-teal));
+  display: flex; align-items: center; justify-content: center; color: #fff; font-size: 1.4rem;
+  box-shadow: 0 10px 24px rgba(91, 61, 246, .25);
+}
+@media (max-width: 767.98px) {
+  .dash-hero { padding: 1.3rem 1.4rem; }
+  .dash-hero h1 { font-size: 1.35rem; }
+  .dash-hero-deco { display: none; }
+}
+
+/* ---------------- Enhanced stat cards (watermark + trend) ---------------- */
+.stat-card-x { position: relative; overflow: hidden; }
+.stat-watermark {
+  position: absolute; right: -6px; top: -6px; font-size: 3.2rem; opacity: .07; color: var(--brand);
+  line-height: 1;
+}
+.stat-trend { display: inline-flex; align-items: center; gap: .3rem; font-size: .72rem; font-weight: 700; margin-top: .6rem; }
+.stat-trend.up { color: var(--green); }
+.stat-trend .trend-muted { color: var(--text-faint); font-weight: 500; }
+
+/* ---------------- Rich empty states ---------------- */
+.empty-state-lg { text-align: center; padding: 2rem 1rem; }
+.empty-ic-lg {
+  width: 68px; height: 68px; border-radius: 50%; margin: 0 auto .9rem;
+  display: flex; align-items: center; justify-content: center; font-size: 1.7rem;
+}
+.empty-title-lg { font-weight: 700; font-size: .92rem; color: var(--text); }
+.empty-sub-lg { font-size: .78rem; color: var(--text-faint); margin-top: .25rem; }
+
+.pill-link {
+  display: inline-flex; align-items: center; gap: .3rem;
+  background: var(--brand-tint); color: var(--brand-dark); font-weight: 700; font-size: .74rem;
+  padding: .35rem .8rem; border-radius: 999px; text-decoration: none;
+}
+.pill-link:hover { background: var(--brand-light); color: var(--brand-dark); }
