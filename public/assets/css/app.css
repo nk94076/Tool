@@ -586,3 +586,44 @@ a:hover { color: var(--brand-dark); }
   padding: .35rem .8rem; border-radius: 999px; text-decoration: none;
 }
 .pill-link:hover { background: var(--brand-light); color: var(--brand-dark); }
+
+/* ---------------- Admin list pages: header + horizontal stats + table ---------------- */
+.page-hero {
+  background: linear-gradient(120deg, #f3f1ff 0%, #eef0fc 55%, #eafaf5 100%);
+  border-radius: 20px; padding: 1.5rem 2rem; margin-bottom: 1.25rem;
+  display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap;
+  position: relative; overflow: hidden; border: 1px solid var(--border-soft);
+}
+.page-hero::after {
+  content: ''; position: absolute; right: -30px; top: -50px; width: 220px; height: 220px;
+  border-radius: 50%; background: radial-gradient(circle, rgba(91, 61, 246, .10), transparent 70%);
+}
+.page-hero-title { display: flex; align-items: stretch; gap: .8rem; }
+.page-hero-title .bar { width: 5px; border-radius: 4px; background: var(--brand-gradient); flex-shrink: 0; }
+.page-hero-title h1 { font-size: 1.6rem; font-weight: 800; letter-spacing: -.02em; margin: 0 0 .3rem; }
+.page-hero-title p { color: var(--text-muted); font-size: .9rem; margin: 0; }
+@media (max-width: 767.98px) { .page-hero { padding: 1.2rem 1.4rem; } .page-hero-title h1 { font-size: 1.25rem; } .dir-hero-deco, .page-hero .dir-hero-deco { display: none; } }
+
+.stat-card-h {
+  display: flex; align-items: center; gap: .9rem;
+  background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px;
+  padding: 1rem 1.15rem; box-shadow: var(--sh-sm); height: 100%;
+}
+.stat-card-h .stat-ic { width: 46px; height: 46px; border-radius: 13px; font-size: 1.1rem; margin-bottom: 0; flex-shrink: 0; }
+.stat-card-h .stat-value { font-size: 1.4rem; line-height: 1.15; }
+.stat-card-h .stat-label { font-size: .8rem; }
+
+.admin-table thead th {
+  font-size: .72rem; text-transform: uppercase; letter-spacing: .04em; color: var(--text-faint);
+  font-weight: 700; border-bottom: 1px solid var(--border-soft); padding: .8rem .75rem;
+}
+.admin-table td { padding: .75rem; vertical-align: middle; border-bottom: 1px solid var(--border-soft); }
+.admin-table tr:last-child td { border-bottom: none; }
+.emp-row-name { font-weight: 700; font-size: .85rem; }
+.emp-row-email { font-size: .74rem; color: var(--text-muted); }
+.dept-pill {
+  display: inline-block; font-size: .72rem; font-weight: 700; padding: .3rem .65rem; border-radius: 999px;
+  background: var(--brand-tint); color: var(--brand);
+}
+.status-dot-pill { display: inline-flex; align-items: center; gap: .35rem; font-size: .72rem; font-weight: 700; padding: .3rem .65rem; border-radius: 999px; }
+.status-dot-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }

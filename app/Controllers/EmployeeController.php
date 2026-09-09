@@ -63,7 +63,8 @@ final class EmployeeController extends Controller
             'status' => $this->input('status', '') ?: null,
         ];
         $page = max(1, (int) $this->input('page', 1));
-        $result = (new User())->search($filters, $page, 25);
+        $userModel = new User();
+        $result = $userModel->search($filters, $page, 25);
 
         $this->view('admin/employees_index', [
             'title' => 'Manage Employees',
@@ -73,6 +74,7 @@ final class EmployeeController extends Controller
             'perPage' => 25,
             'filters' => $filters,
             'departments' => (new Department())->activeList(),
+            'counts' => $userModel->counts(),
         ]);
     }
 
