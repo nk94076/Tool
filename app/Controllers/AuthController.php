@@ -31,17 +31,22 @@ final class AuthController extends Controller
     {
         $this->verifyCsrf();
 
-        if (!(new RateLimit())->attempt($_SERVER['REMOTE_ADDR'] ?? 'unknown', 'signup', 5, 3600)) {
-            set_flash('error', 'Too many signup attempts. Please try again later.');
-            $this->redirect('/signup');
-        }
-
         $fullName = trim((string) $this->input('full_name', ''));
         $email = mb_strtolower(trim((string) $this->input('official_email', '')));
         $password = (string) $this->input('password', '');
         $confirm = (string) $this->input('confirm_password', '');
 
         Session::set('_old', ['full_name' => $fullName, 'official_email' => $email]);
+
+        // The /signup route also carries a coarse per-IP RateLimitMiddleware
+        // guard (signup_ip_guard); this is the finer, per-identity layer on
+        // top of it, so repeated attempts against one email get throttled
+        // without one shared office IP capping out everyone behind it.
+        $emailKey = $email !== '' ? $email : ($_SERVER['REMOTE_ADDR'] ?? 'unknown');
+        if (!(new RateLimit())->attempt($emailKey, 'signup_email', 5, 3600)) {
+            set_flash('error', 'Too many signup attempts. Please try again later.');
+            $this->redirect('/signup');
+        }
 
         if ($fullName === '' || $email === '' || $password === '') {
             set_flash('error', 'All fields are required.');

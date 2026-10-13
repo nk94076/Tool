@@ -18,7 +18,7 @@ $perm = fn(string $slug) => [fn() => AuthMiddleware::handle(), PermissionMiddlew
 $router->get('/', 'HomeController@index');
 
 $router->get('/signup', 'AuthController@showSignup');
-$router->post('/signup', 'AuthController@signup', [RateLimitMiddleware::require('signup_ip', 15, 3600)]);
+$router->post('/signup', 'AuthController@signup', [RateLimitMiddleware::require('signup_ip_guard', 30, 3600)]);
 $router->get('/verify-otp', 'AuthController@showVerifyOtp');
 $router->post('/verify-otp', 'AuthController@verifyOtp');
 $router->post('/resend-otp', 'AuthController@resendOtp');
