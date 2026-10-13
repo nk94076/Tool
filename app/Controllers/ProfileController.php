@@ -17,18 +17,48 @@ use App\Services\FileUploadService;
 final class ProfileController extends Controller
 {
     /**
-     * Employees may edit only while: profile not yet locked, OR the Super
-     * Admin has temporarily unlocked it. This is re-checked server-side on
-     * every request — never trust a client-side "editable" flag.
+     * Whether the full profile form (every field) is open for editing:
+     * not yet locked, or the Super Admin has temporarily unlocked it.
      */
-    private function assertEditable(array $user, array $profile): void
+    private function isFullyEditable(array $user, array $profile): bool
     {
         $locked = (bool) $profile['is_locked'];
         $unlocked = (bool) $user['profile_unlocked'];
-        if ($locked && !$unlocked) {
+        return !$locked || $unlocked;
+    }
+
+    /**
+     * Resubmitting (re-locking) only makes sense from a fully-editable
+     * profile — otherwise this is re-checked server-side, never trusting a
+     * client-side "editable" flag.
+     */
+    private function assertFullyEditable(array $user, array $profile): void
+    {
+        if (!$this->isFullyEditable($user, $profile)) {
             set_flash('error', 'Your profile has been submitted and locked. Only the Super Admin can modify your information.');
             $this->redirect('/profile');
         }
+    }
+
+    /**
+     * Even on a locked profile, some corrections shouldn't require a full
+     * Super Admin unlock: the profile photo, the designation/role (which
+     * legitimately changes on a promotion), and any field still blank
+     * (so an incomplete profile can be finished). Everything already on
+     * file otherwise stays as submitted until unlocked.
+     */
+    private function restrictToAlwaysEditable(array $data, array $profile): array
+    {
+        foreach ($data as $field => $value) {
+            if ($field === 'designation_id') {
+                continue;
+            }
+            $current = $profile[$field] ?? null;
+            if ($current !== null && $current !== '') {
+                $data[$field] = $current;
+            }
+        }
+        return $data;
     }
 
     public function edit(): void
@@ -36,7 +66,6 @@ final class ProfileController extends Controller
         $this->requireLogin();
         $user = Auth::user();
         $profile = (new EmployeeProfile())->findByUser((int) $user['id']);
-        $this->assertEditable($user, $profile);
 
         $this->view('employee/profile_edit', [
             'title' => 'Complete Your Profile',
@@ -44,6 +73,7 @@ final class ProfileController extends Controller
             'departments' => (new Department())->activeList(),
             'designations' => (new Designation())->activeList(),
             'preferences' => (new SecretSantaPreference())->findForUser((int) $user['id']),
+            'locked' => !$this->isFullyEditable($user, $profile),
         ]);
     }
 
@@ -54,9 +84,12 @@ final class ProfileController extends Controller
         $user = Auth::user();
         $profileModel = new EmployeeProfile();
         $profile = $profileModel->findByUser((int) $user['id']);
-        $this->assertEditable($user, $profile);
+        $fullyEditable = $this->isFullyEditable($user, $profile);
 
         $data = $this->collectProfileInput();
+        if (!$fullyEditable) {
+            $data = $this->restrictToAlwaysEditable($data, $profile);
+        }
 
         $errors = $this->validateProfile($data);
         if (!empty($errors)) {
@@ -74,18 +107,34 @@ final class ProfileController extends Controller
             $data['profile_photo_path'] = $path;
         }
 
+        if (!$fullyEditable) {
+            foreach ($data as $field => $newValue) {
+                $oldValue = $profile[$field] ?? null;
+                if ((string) $oldValue !== (string) $newValue) {
+                    AuditService::log('employee_profile.field_changed', (int) $user['id'], $field, $oldValue, $newValue);
+                }
+            }
+        }
+
         $profileModel->update((int) $profile['id'], $data);
 
-        $userModel = new User();
-        $userModel->update((int) $user['id'], ['profile_status' => 'in_progress']);
+        if ($fullyEditable) {
+            $userModel = new User();
+            $userModel->update((int) $user['id'], ['profile_status' => 'in_progress']);
+        }
 
         $ssPrefs = $this->collectSecretSantaPreferences();
         if ($ssPrefs !== null) {
             (new SecretSantaPreference())->upsert((int) $user['id'], $ssPrefs);
         }
 
-        set_flash('success', 'Profile saved. Review and submit when ready.');
-        $this->redirect('/profile/preview');
+        if ($fullyEditable) {
+            set_flash('success', 'Profile saved. Review and submit when ready.');
+            $this->redirect('/profile/preview');
+        }
+
+        set_flash('success', 'Saved. Your photo, role and any details you just filled in are updated — the rest of your locked profile is unchanged.');
+        $this->redirect('/profile');
     }
 
     private function collectProfileInput(): array
@@ -163,7 +212,7 @@ final class ProfileController extends Controller
         $user = Auth::user();
         $profileModel = new EmployeeProfile();
         $profile = $profileModel->findByUser((int) $user['id']);
-        $this->assertEditable($user, $profile);
+        $this->assertFullyEditable($user, $profile);
 
         $profileModel->update((int) $profile['id'], [
             'is_locked' => 1,

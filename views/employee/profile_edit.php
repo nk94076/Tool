@@ -1,3 +1,7 @@
+<?php
+$isLocked = $locked ?? false;
+$fieldLocked = fn(string $field): bool => $isLocked && ($profile[$field] ?? null) !== null && $profile[$field] !== '';
+?>
 <div class="admin-breadcrumb"><a href="/profile">My Profile</a> <i class="bi bi-chevron-right mx-1" style="font-size:.65rem"></i> <span class="current">Edit</span></div>
 
 <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
@@ -10,6 +14,13 @@
   </div>
   <a href="/profile/preview" class="btn btn-outline-primary btn-sm">Preview</a>
 </div>
+
+<?php if ($isLocked): ?>
+  <div class="alert alert-secondary small">
+    <i class="bi bi-lock me-1"></i>
+    Your profile is submitted and locked. You can still change your <strong>profile photo</strong>, update your <strong>designation / role</strong> (e.g. after a promotion), and fill in anything still missing below. For anything else already on file, ask the Super Admin to unlock your profile.
+  </div>
+<?php endif; ?>
 
 <form method="post" action="/profile/edit" enctype="multipart/form-data" novalidate>
   <?= $csrfField ?>
@@ -27,11 +38,11 @@
         </div>
         <div class="col-md-4">
           <label class="form-label small">Date of Birth</label>
-          <input type="date" name="date_of_birth" class="form-control" value="<?= e($profile['date_of_birth'] ?? '') ?>">
+          <input type="date" name="date_of_birth" class="form-control" value="<?= e($profile['date_of_birth'] ?? '') ?>" <?= $fieldLocked('date_of_birth') ? 'disabled' : '' ?>>
         </div>
         <div class="col-md-4">
           <label class="form-label small">Gender</label>
-          <select name="gender" class="form-select">
+          <select name="gender" class="form-select" <?= $fieldLocked('gender') ? 'disabled' : '' ?>>
             <option value="">Select</option>
             <?php foreach (['male' => 'Male', 'female' => 'Female', 'other' => 'Other', 'prefer_not_to_say' => 'Prefer not to say'] as $val => $label): ?>
               <option value="<?= $val ?>" <?= ($profile['gender'] ?? '') === $val ? 'selected' : '' ?>><?= $label ?></option>
@@ -40,23 +51,23 @@
         </div>
         <div class="col-md-4">
           <label class="form-label small">Mobile Number</label>
-          <input type="text" name="mobile_number" class="form-control" value="<?= e($profile['mobile_number'] ?? '') ?>">
+          <input type="text" name="mobile_number" class="form-control" value="<?= e($profile['mobile_number'] ?? '') ?>" <?= $fieldLocked('mobile_number') ? 'disabled' : '' ?>>
         </div>
         <div class="col-md-4">
           <label class="form-label small">Personal Email (optional)</label>
-          <input type="email" name="personal_email" class="form-control" value="<?= e($profile['personal_email'] ?? '') ?>">
+          <input type="email" name="personal_email" class="form-control" value="<?= e($profile['personal_email'] ?? '') ?>" <?= $fieldLocked('personal_email') ? 'disabled' : '' ?>>
         </div>
         <div class="col-md-4">
           <label class="form-label small">Emergency Contact Name</label>
-          <input type="text" name="emergency_contact_name" class="form-control" value="<?= e($profile['emergency_contact_name'] ?? '') ?>">
+          <input type="text" name="emergency_contact_name" class="form-control" value="<?= e($profile['emergency_contact_name'] ?? '') ?>" <?= $fieldLocked('emergency_contact_name') ? 'disabled' : '' ?>>
         </div>
         <div class="col-md-4">
           <label class="form-label small">Emergency Contact Number</label>
-          <input type="text" name="emergency_contact_number" class="form-control" value="<?= e($profile['emergency_contact_number'] ?? '') ?>">
+          <input type="text" name="emergency_contact_number" class="form-control" value="<?= e($profile['emergency_contact_number'] ?? '') ?>" <?= $fieldLocked('emergency_contact_number') ? 'disabled' : '' ?>>
         </div>
         <div class="col-md-8">
           <label class="form-label small">Current Address</label>
-          <textarea name="current_address" class="form-control" rows="2"><?= e($profile['current_address'] ?? '') ?></textarea>
+          <textarea name="current_address" class="form-control" rows="2" <?= $fieldLocked('current_address') ? 'disabled' : '' ?>><?= e($profile['current_address'] ?? '') ?></textarea>
         </div>
       </div>
     </div>
@@ -68,19 +79,19 @@
       <div class="row g-3">
         <div class="col-md-4">
           <label class="form-label small">Employee ID</label>
-          <input type="text" name="employee_code" class="form-control" value="<?= e($profile['employee_code'] ?? '') ?>">
+          <input type="text" name="employee_code" class="form-control" value="<?= e($profile['employee_code'] ?? '') ?>" <?= $fieldLocked('employee_code') ? 'disabled' : '' ?>>
         </div>
         <div class="col-md-4">
           <label class="form-label small">Date of Joining</label>
-          <input type="date" name="date_of_joining" class="form-control" value="<?= e($profile['date_of_joining'] ?? '') ?>">
+          <input type="date" name="date_of_joining" class="form-control" value="<?= e($profile['date_of_joining'] ?? '') ?>" <?= $fieldLocked('date_of_joining') ? 'disabled' : '' ?>>
         </div>
         <div class="col-md-4">
           <label class="form-label small">Work Location</label>
-          <input type="text" name="work_location" class="form-control" value="<?= e($profile['work_location'] ?? '') ?>">
+          <input type="text" name="work_location" class="form-control" value="<?= e($profile['work_location'] ?? '') ?>" <?= $fieldLocked('work_location') ? 'disabled' : '' ?>>
         </div>
         <div class="col-md-4">
           <label class="form-label small">Department</label>
-          <select name="department_id" class="form-select">
+          <select name="department_id" class="form-select" <?= $fieldLocked('department_id') ? 'disabled' : '' ?>>
             <option value="">Select</option>
             <?php foreach ($departments as $d): ?>
               <option value="<?= $d['id'] ?>" <?= (int) ($profile['department_id'] ?? 0) === (int) $d['id'] ? 'selected' : '' ?>><?= e($d['name']) ?></option>
@@ -88,7 +99,7 @@
           </select>
         </div>
         <div class="col-md-4">
-          <label class="form-label small">Designation</label>
+          <label class="form-label small">Designation <?php if ($isLocked): ?><span class="text-muted">(always editable &mdash; promotions)</span><?php endif; ?></label>
           <select name="designation_id" class="form-select">
             <option value="">Select</option>
             <?php foreach ($designations as $d): ?>
@@ -98,7 +109,7 @@
         </div>
         <div class="col-md-4">
           <label class="form-label small">Employment Type</label>
-          <select name="employment_type" class="form-select">
+          <select name="employment_type" class="form-select" <?= $fieldLocked('employment_type') ? 'disabled' : '' ?>>
             <option value="">Select</option>
             <?php foreach (['full_time' => 'Full-time', 'part_time' => 'Part-time', 'contract' => 'Contract', 'intern' => 'Intern'] as $val => $label): ?>
               <option value="<?= $val ?>" <?= ($profile['employment_type'] ?? '') === $val ? 'selected' : '' ?>><?= $label ?></option>
@@ -155,6 +166,6 @@
   </div>
 
   <div class="d-flex gap-2 justify-content-end">
-    <button type="submit" class="btn btn-primary px-4">Save &amp; Continue</button>
+    <button type="submit" class="btn btn-primary px-4"><?= $isLocked ? 'Save Changes' : 'Save &amp; Continue' ?></button>
   </div>
 </form>
