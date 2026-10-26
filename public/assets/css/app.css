@@ -422,6 +422,22 @@ a:hover { color: var(--brand-dark); }
 @media (max-width: 991.98px) {
   .app-main { margin-left: 0; }
   .app-content { padding-bottom: calc(var(--bottom-nav-height) + 1rem); }
+
+  /* On a long form (e.g. profile edit, with Secret Santa fields below the
+     main sections), the submit button sitting at the very end is easy to
+     scroll past without noticing. Pin it just above the bottom nav so it's
+     always reachable instead of requiring a full scroll to the bottom. */
+  .form-sticky-actions {
+    position: sticky;
+    bottom: calc(var(--bottom-nav-height) + .75rem);
+    background: var(--card-bg);
+    padding: .65rem .75rem;
+    margin-top: .75rem;
+    border-radius: var(--r-md);
+    box-shadow: var(--sh-md);
+    border: 1px solid var(--border-soft);
+    z-index: 80;
+  }
 }
 
 @media (max-width: 575.98px) {

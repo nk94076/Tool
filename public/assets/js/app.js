@@ -69,17 +69,23 @@
   // Position every opened dropdown-menu as position:fixed, computed
   // straight from the toggle's real screen position, so it always
   // renders above everything regardless of any clipping ancestor.
-  document.addEventListener('shown.bs.dropdown', function (e) {
-    const toggle = e.target;
-    const menu = toggle.nextElementSibling;
-    if (!menu || !menu.classList.contains('dropdown-menu')) return;
-
+  function positionDropdownMenu(toggle, menu) {
     const rect = toggle.getBoundingClientRect();
     const menuHeight = menu.offsetHeight;
     const fitsBelow = rect.bottom + menuHeight + 4 <= window.innerHeight;
 
     menu.style.position = 'fixed';
     menu.style.margin = '0';
+    // Bootstrap's Popper instance positions the menu with position:absolute
+    // plus an inline transform (e.g. translate(10px, 30px)) left over from
+    // its own calculation. Left in place, that transform stacks on top of
+    // our fixed top/left below and shifts the menu off to the wrong spot —
+    // often off-screen, so it looks like it isn't showing at all until some
+    // later scroll/resize nudges Popper into recalculating (and clearing)
+    // it. Clearing it here makes the menu land in the right place the
+    // instant it opens, with no extra scroll needed.
+    menu.style.transform = 'none';
+    menu.style.inset = 'auto';
     menu.style.top = fitsBelow
       ? (rect.bottom + 4) + 'px'
       : (rect.top - menuHeight - 4) + 'px';
@@ -91,5 +97,12 @@
       menu.style.left = rect.left + 'px';
       menu.style.right = 'auto';
     }
+  }
+
+  document.addEventListener('shown.bs.dropdown', function (e) {
+    const toggle = e.target;
+    const menu = toggle.nextElementSibling;
+    if (!menu || !menu.classList.contains('dropdown-menu')) return;
+    positionDropdownMenu(toggle, menu);
   });
 })();
