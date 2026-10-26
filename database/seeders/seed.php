@@ -186,11 +186,11 @@ $templates = [
     ],
     [
         'birthday_reminder', 'Birthday Reminder', 'Tomorrow is {{employee_name}}\'s Birthday 🎂',
-        '<p>A friendly reminder that tomorrow is <strong>{{employee_name}}</strong>\'s birthday!</p>',
+        '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f6f4ff;background:linear-gradient(135deg,#f6f4ff 0%,#eafaf7 100%);border-radius:14px;"><tr><td align="center" style="padding:30px 20px 26px;"><div style="font-size:38px;line-height:1;margin:0 0 12px;">&#127874;&nbsp;&nbsp;&#127880;&nbsp;&nbsp;&#127873;</div><p style="margin:0 0 6px;color:#6b7280;font-size:13.5px;font-family:\'Segoe UI\',Helvetica,Arial,sans-serif;">A friendly reminder that tomorrow is</p><p style="margin:0;color:#5b3df6;font-size:25px;font-weight:800;font-family:\'Segoe UI\',Helvetica,Arial,sans-serif;">{{employee_name}}\'s Birthday! &#127881;</p></td></tr></table><p style="margin:20px 0 0;">Drop by and wish them a little early, or save it for tomorrow &mdash; either way, let\'s make the day special!</p>',
     ],
     [
         'birthday_today', 'Birthday Today', 'Happy Birthday {{employee_name}}! 🎉',
-        '<p>Join us in wishing <strong>{{employee_name}}</strong> a very happy birthday today!</p>',
+        '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f6f4ff;background:linear-gradient(135deg,#f6f4ff 0%,#eafaf7 100%);border-radius:14px;"><tr><td align="center" style="padding:30px 20px 26px;"><div style="font-size:38px;line-height:1;margin:0 0 12px;">&#127881;&nbsp;&nbsp;&#127874;&nbsp;&nbsp;&#129395;</div><p style="margin:0 0 6px;color:#6b7280;font-size:13.5px;font-family:\'Segoe UI\',Helvetica,Arial,sans-serif;">Everyone, join us in wishing</p><p style="margin:0;color:#5b3df6;font-size:25px;font-weight:800;font-family:\'Segoe UI\',Helvetica,Arial,sans-serif;">{{employee_name}} a Very Happy Birthday! &#127881;</p></td></tr></table><p style="margin:20px 0 0;">Take a moment to send your wishes today and help make it a birthday to remember!</p>',
     ],
     [
         'anniversary_reminder', 'Anniversary Reminder', 'Tomorrow is {{employee_name}}\'s {{years_completed}} Year Work Anniversary 🎉',
