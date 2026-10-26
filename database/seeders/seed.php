@@ -174,15 +174,15 @@ echo "Seeded designations.\n";
 $templates = [
     [
         'otp_verification', 'OTP Verification', 'Your Adhook Employee Portal verification code',
-        '<p>Hello,</p><p>Your one-time verification code is:</p><h2>{{otp_code}}</h2><p>This code will expire in {{expiry_minutes}} minutes. Do not share this code with anyone.</p><p>— Adhook Employee Portal</p>',
+        '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f6f4ff;background:linear-gradient(135deg,#f6f4ff 0%,#eafaf7 100%);border-radius:14px;"><tr><td align="center" style="padding:30px 20px 26px;"><div style="font-size:38px;line-height:1;margin:0 0 12px;">&#128272;</div><p style="margin:0 0 6px;color:#6b7280;font-size:13.5px;font-family:\'Segoe UI\',Helvetica,Arial,sans-serif;">Your Adhook Employee Portal verification code is</p><p style="margin:0;color:#5b3df6;font-size:34px;font-weight:800;letter-spacing:6px;font-family:\'Segoe UI\',Helvetica,Arial,sans-serif;">{{otp_code}}</p></td></tr></table><p style="margin:20px 0 0;">This code expires in {{expiry_minutes}} minutes. For your security, never share it with anyone &mdash; not even Adhook staff.</p>',
     ],
     [
         'welcome', 'Welcome Email', 'Welcome to Adhook Employee Portal',
-        '<p>Hi {{employee_name}},</p><p>Your account has been created. Please log in and complete your employee profile.</p><p>— Adhook Employee Portal</p>',
+        '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f6f4ff;background:linear-gradient(135deg,#f6f4ff 0%,#eafaf7 100%);border-radius:14px;"><tr><td align="center" style="padding:30px 20px 26px;"><div style="font-size:38px;line-height:1;margin:0 0 12px;">&#128075;&nbsp;&nbsp;&#127881;&nbsp;&nbsp;&#128640;</div><p style="margin:0 0 6px;color:#6b7280;font-size:13.5px;font-family:\'Segoe UI\',Helvetica,Arial,sans-serif;">Welcome to the team,</p><p style="margin:0;color:#5b3df6;font-size:25px;font-weight:800;font-family:\'Segoe UI\',Helvetica,Arial,sans-serif;">{{employee_name}}!</p></td></tr></table><p style="margin:20px 0 0;">Your Adhook Employee Portal account is ready. Log in and complete your profile to get started.</p>',
     ],
     [
         'profile_unlock', 'Profile Unlocked', 'Your employee profile has been unlocked',
-        '<p>Hi {{employee_name}},</p><p>Your profile has been unlocked by the Super Admin for editing. Please review and resubmit your details.</p><p>— Adhook Employee Portal</p>',
+        '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f6f4ff;background:linear-gradient(135deg,#f6f4ff 0%,#eafaf7 100%);border-radius:14px;"><tr><td align="center" style="padding:30px 20px 26px;"><div style="font-size:38px;line-height:1;margin:0 0 12px;">&#128275;&nbsp;&nbsp;&#128273;</div><p style="margin:0 0 6px;color:#6b7280;font-size:13.5px;font-family:\'Segoe UI\',Helvetica,Arial,sans-serif;">Good news,</p><p style="margin:0;color:#5b3df6;font-size:25px;font-weight:800;font-family:\'Segoe UI\',Helvetica,Arial,sans-serif;">Your Profile Has Been Unlocked</p></td></tr></table><p style="margin:20px 0 0;">Hi {{employee_name}}, the Super Admin has reopened your profile for editing. Please review and resubmit your details.</p>',
     ],
     [
         'birthday_reminder', 'Birthday Reminder', 'Tomorrow is {{employee_name}}\'s Birthday 🎂',
@@ -194,11 +194,11 @@ $templates = [
     ],
     [
         'anniversary_reminder', 'Anniversary Reminder', 'Tomorrow is {{employee_name}}\'s {{years_completed}} Year Work Anniversary 🎉',
-        '<p>A friendly reminder that tomorrow marks {{years_completed}} year(s) since <strong>{{employee_name}}</strong> joined us on {{joining_date}}!</p>',
+        '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f6f4ff;background:linear-gradient(135deg,#f6f4ff 0%,#eafaf7 100%);border-radius:14px;"><tr><td align="center" style="padding:30px 20px 26px;"><div style="font-size:38px;line-height:1;margin:0 0 12px;">&#127942;&nbsp;&nbsp;&#127882;&nbsp;&nbsp;&#127881;</div><p style="margin:0 0 6px;color:#6b7280;font-size:13.5px;font-family:\'Segoe UI\',Helvetica,Arial,sans-serif;">A friendly reminder that tomorrow marks</p><p style="margin:0;color:#5b3df6;font-size:22px;font-weight:800;font-family:\'Segoe UI\',Helvetica,Arial,sans-serif;">{{employee_name}}\'s {{years_completed}} Year Anniversary! &#127881;</p></td></tr></table><p style="margin:20px 0 0;">They joined us on {{joining_date}} &mdash; let\'s celebrate this milestone together!</p>',
     ],
     [
         'anniversary_today', 'Anniversary Today', 'Happy {{years_completed}} Year Work Anniversary {{employee_name}}!',
-        '<p>Congratulations to <strong>{{employee_name}}</strong> on completing {{years_completed}} year(s) with Adhook Media today!</p>',
+        '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f6f4ff;background:linear-gradient(135deg,#f6f4ff 0%,#eafaf7 100%);border-radius:14px;"><tr><td align="center" style="padding:30px 20px 26px;"><div style="font-size:38px;line-height:1;margin:0 0 12px;">&#127881;&nbsp;&nbsp;&#127942;&nbsp;&nbsp;&#127882;</div><p style="margin:0 0 6px;color:#6b7280;font-size:13.5px;font-family:\'Segoe UI\',Helvetica,Arial,sans-serif;">Everyone, join us in celebrating</p><p style="margin:0;color:#5b3df6;font-size:22px;font-weight:800;font-family:\'Segoe UI\',Helvetica,Arial,sans-serif;">{{employee_name}}\'s {{years_completed}} Year Anniversary Today! &#127881;</p></td></tr></table><p style="margin:20px 0 0;">Congratulations on this milestone with Adhook Media &mdash; thank you for everything you do!</p>',
     ],
 ];
 
