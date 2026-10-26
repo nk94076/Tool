@@ -165,7 +165,7 @@ $fieldLocked = fn(string $field): bool => $isLocked && ($profile[$field] ?? null
     </div>
   </div>
 
-  <div class="d-flex gap-2 justify-content-end">
+  <div class="d-flex gap-2 justify-content-end form-sticky-actions">
     <button type="submit" class="btn btn-primary px-4"><?= $isLocked ? 'Save Changes' : 'Save &amp; Continue' ?></button>
   </div>
 </form>
