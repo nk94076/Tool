@@ -69,6 +69,23 @@
   // Position every opened dropdown-menu as position:fixed, computed
   // straight from the toggle's real screen position, so it always
   // renders above everything regardless of any clipping ancestor.
+  //
+  // Bootstrap attaches a Popper instance to every dropdown by default,
+  // which keeps the menu position:absolute and re-asserts its own
+  // placement (inline transform/inset) via a ResizeObserver-driven
+  // update loop — a few milliseconds after our shown.bs.dropdown
+  // handler below sets position:fixed, Popper's own update fires and
+  // silently overwrites it right back to position:absolute, undoing
+  // the fix (this is why it could look like nothing happened, or why
+  // it only seemed to "fix itself" after a scroll nudged something).
+  // data-bs-display="static" tells Bootstrap to skip Popper entirely
+  // for these toggles, so there is nothing left to fight our fix.
+  // Must be set before the toggle is ever clicked, since Bootstrap
+  // reads it when it lazily creates the Dropdown instance.
+  document.querySelectorAll('[data-bs-toggle="dropdown"]').forEach(function (toggle) {
+    toggle.setAttribute('data-bs-display', 'static');
+  });
+
   function positionDropdownMenu(toggle, menu) {
     const rect = toggle.getBoundingClientRect();
     const menuHeight = menu.offsetHeight;
@@ -76,14 +93,6 @@
 
     menu.style.position = 'fixed';
     menu.style.margin = '0';
-    // Bootstrap's Popper instance positions the menu with position:absolute
-    // plus an inline transform (e.g. translate(10px, 30px)) left over from
-    // its own calculation. Left in place, that transform stacks on top of
-    // our fixed top/left below and shifts the menu off to the wrong spot —
-    // often off-screen, so it looks like it isn't showing at all until some
-    // later scroll/resize nudges Popper into recalculating (and clearing)
-    // it. Clearing it here makes the menu land in the right place the
-    // instant it opens, with no extra scroll needed.
     menu.style.transform = 'none';
     menu.style.inset = 'auto';
     menu.style.top = fitsBelow

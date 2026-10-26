@@ -159,7 +159,14 @@ a:hover { color: var(--brand-dark); }
   color: var(--text-faint); padding: 1.1rem .75rem .4rem;
 }
 
-.app-main { flex: 1; margin-left: var(--sidebar-width); display: flex; flex-direction: column; min-height: 100vh; }
+/* min-width:0 overrides the flex default of min-width:auto, which lets a
+   flex item's content (here, deep inside: a wide admin table) refuse to
+   shrink below its own natural width — forcing the WHOLE PAGE to scroll
+   horizontally instead of being contained by .table-responsive's intended
+   internal scroll. Without this, every page with a wide table overflows
+   the viewport between roughly 640-991px (any width narrower than the
+   table's natural content width, before the lg sidebar frees up room). */
+.app-main { flex: 1; min-width: 0; margin-left: var(--sidebar-width); display: flex; flex-direction: column; min-height: 100vh; }
 .app-header {
   height: var(--header-height);
   background: var(--card-bg);
@@ -395,12 +402,28 @@ a:hover { color: var(--brand-dark); }
 }
 .btn-primary:hover, .btn-primary:focus {
   background: linear-gradient(135deg, var(--brand-dark), var(--brand-dark));
+  box-shadow: 0 10px 20px rgba(91, 61, 246, .32);
+  transform: translateY(-1px);
 }
-.btn { border-radius: 11px; font-weight: 600; }
-.form-control, .form-select { border-radius: 10px; border-color: var(--border); }
+.btn-primary:active { transform: translateY(0); box-shadow: 0 4px 10px rgba(91, 61, 246, .28); }
+.btn {
+  border-radius: 11px; font-weight: 600;
+  transition: transform .15s ease, box-shadow .15s ease, background-color .15s ease, border-color .15s ease, color .15s ease;
+}
+.btn-outline-primary:hover, .btn-outline-secondary:hover, .btn-outline-danger:hover {
+  transform: translateY(-1px); box-shadow: 0 4px 10px rgba(16, 24, 40, .1);
+}
+.form-control, .form-select { border-radius: 10px; border-color: var(--border); transition: border-color .15s ease, box-shadow .15s ease; }
 .form-control:focus, .form-select:focus { border-color: #a89bf7; box-shadow: 0 0 0 .2rem rgba(91, 61, 246, .15); }
 .table > :not(caption) > * > * { vertical-align: middle; }
-.dropdown-menu { border-radius: var(--r-md); border: 1px solid var(--border-soft); box-shadow: var(--sh-md); }
+.dropdown-menu {
+  border-radius: var(--r-md); border: 1px solid var(--border-soft);
+  box-shadow: 0 4px 10px rgba(16, 24, 40, .06), 0 16px 32px rgba(16, 24, 40, .12);
+  padding: .4rem;
+}
+.dropdown-item { border-radius: 8px; padding: .5rem .7rem; font-size: .88rem; transition: background-color .12s ease, color .12s ease; }
+.dropdown-item:hover, .dropdown-item:focus { background: var(--brand-tint); color: var(--brand-dark); }
+.dropdown-item.text-danger:hover, .dropdown-item.text-danger:focus { background: var(--red-tint); color: var(--red); }
 
 /* ---------------- Mobile bottom nav ---------------- */
 .mobile-bottom-nav {
@@ -635,6 +658,8 @@ a:hover { color: var(--brand-dark); }
 }
 .admin-table td { padding: .75rem; vertical-align: middle; border-bottom: 1px solid var(--border-soft); }
 .admin-table tr:last-child td { border-bottom: none; }
+.admin-table tbody tr { transition: background-color .12s ease; }
+.admin-table tbody tr:hover { background-color: var(--brand-tint); }
 .emp-row-name { font-weight: 700; font-size: .85rem; }
 .emp-row-email { font-size: .74rem; color: var(--text-muted); }
 .dept-pill {
